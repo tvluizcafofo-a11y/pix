@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0b6b3a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>PIX Recebimentos</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ===== ESTILOS COMPLETOS ===== */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f5f7;
+            color: #17202a;
+        }
+        header {
+            background: #0b6b3a;
+            color: #fff;
+            padding: 20px 16px;
+            text-align: center;
+            position: relative;
+            cursor: default;
+        }
+        #secretArea {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 60px;
+            z-index: 10;
+            cursor: pointer;
+            background: transparent;
+        }
+        header h1 {
+            margin: 0 0 6px;
+            font-size: 25px;
+        }
+        header h1 i {
+            margin-right: 10px;
+        }
+        header p {
+            margin: 0;
+            opacity: .9;
+        }
+        main {
+            max-width: 820px;
+            margin: 18px auto;
+            padding: 0 12px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 3px 14px #00000012;
+        }
+        h2 {
+            margin: 0 0 15px;
+            font-size: 19px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 12px 0 6px;
+        }
+        input,
+        select,
+        button,
+        textarea {
+            width: 100%;
+            font: inherit;
+            border-radius: 10px;
+        }
+        input,
+        textarea {
+            padding: 12px;
+            border: 1px solid #cbd2d9;
+            background: #fff;
+        }
+        input#valor {
+            font-size: 24px;
+            padding: 16px 14px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-width: 2px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 72px;
+        }
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        button {
+            border: 0;
+            padding: 13px 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .primary {
+            background: #0b6b3a;
+            color: #fff;
+        }
+        .secondary {
+            background: #e8f2ed;
+            color: #0b6b3a;
+        }
+        .danger {
+            background: #fdeaea;
+            color: #a42020;
+        }
+        .result {
+            text-align: center;
+            display: none;
+        }
+        #qrcode {
+            display: inline-block;
+            padding: 16px;
+            background: #fff;
+            border-radius: 16px;
+            border: 4px solid #0b6b3a;
+            box-shadow: 0 4px 20px rgba(11, 107, 58, 0.2);
+            margin: 8px auto;
+        }
+        #qrcode img,
+        #qrcode canvas {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .valor {
+            font-size: 31px;
+            font-weight: bold;
+            color: #0b6b3a;
+            margin: 10px;
+        }
+        .copybox {
+            word-break: break-all;
+            background: #f4f6f8;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: left;
+            font-size: 13px;
+        }
+        .status {
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .small {
+            font-size: 12px;
+            color: #68737d;
+        }
+        .resumo {
+            background: #f7faf8;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .resumo .info {
+            font-size: 14px;
+        }
+        .resumo .info strong {
+            display: inline-block;
+            min-width: 60px;
+        }
+        .resumo .info .chave-mascarada {
+            cursor: help;
+            border-bottom: 1px dashed #68737d;
+        }
+        .resumo .btn-edit {
+            background: transparent;
+            border: 1px solid #0b6b3a;
+            color: #0b6b3a;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0;
+            transition: all 0.3s;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .resumo .btn-edit.active {
+            opacity: 1;
+            pointer-events: auto;
+            background: #e8f2ed;
+            box-shadow: 0 0 0 2px #0b6b3a;
+        }
+        .resumo .btn-edit:hover {
+            background: #d4e6dc;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: #fff;
+            max-width: 600px;
+            width: 100%;
+            border-radius: 20px;
+            padding: 24px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        .modal h2 {
+            margin-top: 0;
+        }
+        .modal .btn-group {
+            display: flex;
+            gap: 12px;
+        }
+        .modal .btn-group button {
+            flex: 1;
+        }
+        @media (max-width: 560px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+        }
+        #btnGerenciar {
+            display: none;
+            transition: all 0.3s;
+        }
+        #btnGerenciar.active {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Relatórios - dentro do modal */
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 16px;
+        }
+        .filtros .grupo {
+            flex: 1 1 160px;
+        }
+        .filtros .grupo label {
+            margin: 0 0 4px;
+            font-size: 13px;
+        }
+        .filtros .grupo input {
+            padding: 8px 10px;
+        }
+        .filtros .grupo button {
+            margin: 0;
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+        .lista-recebimentos {
+            margin-top: 12px;
+        }
+        .item-recebimento {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid #e8edf2;
+            background: #fafcff;
+            border-radius: 8px;
+            margin-bottom: 6px;
+        }
+        .item-recebimento .info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 14px;
+        }
+        .item-recebimento .info .data {
+            color: #68737d;
+            min-width: 100px;
+        }
+        .item-recebimento .info .valor {
+            font-weight: bold;
+            color: #0b6b3a;
+        }
+        .item-recebimento .info .descricao {
+            color: #2c3e50;
+        }
+        .item-recebimento .status {
+            font-size: 13px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .status-pendente {
+            background: #fef6e0;
+            color: #a67c00;
+        }
+        .status-pago {
+            background: #dff0d8;
+            color: #1e7e34;
+        }
+        .item-recebimento .acoes button {
+            margin: 0 0 0 8px;
+            padding: 4px 12px;
+            font-size: 13px;
+        }
+        .btn-pequeno {
+            padding: 6px 14px;
+            font-size: 13px;
+            margin: 0;
+        }
+        .sem-dados {
+            text-align: center;
+            color: #68737d;
+            padding: 20px;
+        }
+        .total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 10px;
+            border-top: 2px solid #0b6b3a;
+            padding-top: 10px;
+        }
+        .botoes-topo {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .botoes-topo button {
+            width: auto;
+            padding: 10px 20px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="secretArea"></div>
+        <h1 id="headerTitulo"><i class="fas fa-cash-register"></i> PIX Recebimentos</h1>
+        <p id="headerSubtitulo">Gerencie suas cobranças e recebimentos</p>
+    </header>
+
+    <main>
+        <section class="card" id="telaPrincipal">
+            <div id="resumoRecebedor"></div>
+            <h2>💰 Nova cobrança</h2>
+            <label for="valor">Valor a receber (R$)</label>
+            <input id="valor" inputmode="decimal" placeholder="0,00" oninput="formatarValor(this)">
+            <label for="descricaoCobranca">Descrição desta cobrança (opcional)</label>
+            <input id="descricaoCobranca" maxlength="72" placeholder="Ex.: Venda / serviço">
+            <button class="primary" onclick="gerarPix()">⚡ Gerar QR Code PIX</button>
+            <div id="recebStatus" class="status"></div>
+        </section>
+
+        <div class="botoes-topo">
+            <button class="secondary" id="btnGerenciar" onclick="abrirModalCadastro()" style="display:none;">⚙️ Gerenciar recebedor</button>
+            <button class="secondary" onclick="abrirModalRelatorios()">📊 Relatórios</button>
+        </div>
+
+        <section id="resultado" class="card result">
+            <h2>📲 Pagamento PIX</h2>
+            <div class="valor" id="valorExibido">R$ 0,00</div>
+            <div id="qrcode"></div>
+            <p><b>Aponte a câmera do celular para o QR Code</b></p>
+            <button class="secondary" onclick="copiarPix()">📋 Copiar PIX Copia e Cola</button>
+            <button class="secondary" onclick="compartilharPix()">📤 Compartilhar código PIX</button>
+            <h3>PIX Copia e Cola</h3>
+            <div id="payload" class="copybox"></div>
+            <p class="small">Após o pagamento, vá em "Relatórios" e confirme o recebimento.</p>
+        </section>
+    </main>
+
+    <!-- MODAL CADASTRO -->
+    <div class="modal-overlay" id="modalCadastro">
+        <div class="modal">
+            <h2>👤 Cadastro do recebedor</h2>
+            <p class="small">Os dados ficam salvos apenas neste aparelho/navegador.</p>
+            <label for="modalHeader">Título do cabeçalho (opcional)</label>
+            <input id="modalHeader" maxlength="50" placeholder="Ex.: Minha Loja - PIX" value="PIX Recebimentos">
+            <label for="modalNome">Nome do recebedor *</label>
+            <input id="modalNome" maxlength="25" placeholder="Ex.: JOAO DA SILVA">
+            <label for="modalChave">Chave PIX *</label>
+            <input id="modalChave" maxlength="77" placeholder="CPF, CNPJ, telefone, e-mail ou chave aleatória">
+            <div class="row">
+                <div><label for="modalCidade">Cidade *</label><input id="modalCidade" maxlength="15" placeholder="Ex.: SAO PAULO"></div>
+                <div><label for="modalTxid">Identificação (TXID)</label><input id="modalTxid" maxlength="25" value="***"></div>
+            </div>
+            <label for="modalDescricao">Descrição padrão (opcional)</label>
+            <textarea id="modalDescricao" maxlength="72" placeholder="Ex.: Pagamento de produtos"></textarea>
+            <div class="btn-group">
+                <button class="secondary" onclick="fecharModalCadastro()">Cancelar</button>
+                <button class="primary" onclick="salvarCadastro()">💾 Salvar</button>
+            </div>
+            <div id="cadastroStatus" class="status"></div>
+            <button class="danger" onclick="apagarCadastro()" style="margin-top:16px;">🗑️ Apagar cadastro</button>
+        </div>
+    </div>
+
+    <!-- MODAL RELATÓRIOS -->
+    <div class="modal-overlay" id="modalRelatorios">
+        <div class="modal" style="max-width: 820px;">
+            <h2>📊 Relatórios de recebimentos</h2>
+            <div class="filtros">
+                <div class="grupo"><label>Dia específico</label><input type="date" id="filtroData"></div>
+                <div class="grupo"><button class="secondary btn-pequeno" onclick="filtrarPorDia()">🔍 Filtrar dia</button></div>
+                <div class="grupo"><label>Período de</label><input type="date" id="filtroInicio"></div>
+                <div class="grupo"><label>até</label><input type="date" id="filtroFim"></div>
+                <div class="grupo"><button class="secondary btn-pequeno" onclick="filtrarPorPeriodo()">🔍 Filtrar período</button></div>
+                <div class="grupo"><button class="secondary btn-pequeno" onclick="limparFiltros()">🔄 Mostrar todos</button></div>
+                <div class="grupo"><button class="secondary btn-pequeno" onclick="fecharModalRelatorios()">✖ Fechar</button></div>
+            </div>
+            <div id="listaRecebimentos" class="lista-recebimentos"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // ===== JAVASCRIPT COMPLETO =====
+        const $ = id => document.getElementById(id);
+        let secretClicks = 0, secretTimer = null;
+
+        document.getElementById('secretArea').addEventListener('click', function(e) {
+            e.stopPropagation();
+            secretClicks++;
+            if (!secretTimer) {
+                secretTimer = setTimeout(() => { secretClicks = 0; secretTimer = null; }, 1000);
+            }
+            if (secretClicks >= 7) {
+                secretClicks = 0;
+                clearTimeout(secretTimer);
+                secretTimer = null;
+                habilitarEdicao();
+                const area = document.getElementById('secretArea');
+                area.style.background = 'rgba(255,255,255,0.2)';
+                setTimeout(() => { area.style.background = 'transparent'; }, 300);
+                console.log('🔓 Modo de edição ativado!');
+            }
+        });
+
+        function habilitarEdicao() {
+            const btn = document.getElementById('btnGerenciar');
+            btn.classList.add('active');
+            btn.style.display = 'block';
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = 'auto';
+            const editBtn = document.querySelector('.resumo .btn-edit');
+            if (editBtn) { editBtn.classList.add('active'); editBtn.style.opacity = '1'; editBtn.style.pointerEvents = 'auto'; }
+        }
+
+        function desabilitarEdicao() {
+            const btn = document.getElementById('btnGerenciar');
+            btn.classList.remove('active');
+            btn.style.display = 'none';
+            btn.style.opacity = '0';
+            btn.style.pointerEvents = 'none';
+            const editBtn = document.querySelector('.resumo .btn-edit');
+            if (editBtn) { editBtn.classList.remove('active'); editBtn.style.opacity = '0.4'; editBtn.style.pointerEvents = 'none'; }
+        }
+
+        function limparTexto(s, max) {
+            return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z0-9 .\\-]/g,'').toUpperCase().trim().slice(0,max);
+        }
+
+        function limparHeader(s, max) {
+            if (!s) return '';
+            return s.trim().slice(0, max);
+        }
+
+        function mascararChave(chave) {
+            if (!chave) return chave;
+            chave = chave.trim();
+            const semEspacos = chave.replace(/\s/g, '');
+            const temMais55 = semEspacos.startsWith('+55') || semEspacos.startsWith('55');
+            if (temMais55) {
+                const apenasDigitos = semEspacos.replace(/\D/g, '');
+                if (apenasDigitos.length >= 12 && apenasDigitos.startsWith('55')) {
+                    const digitosVisiveis = apenasDigitos.slice(2, -4);
+                    return '+55' + digitosVisiveis + '****';
+                }
+                return chave;
+            }
+            if (/^\d{11}$/.test(chave)) {
+                return '***' + chave.slice(3, -2) + '**';
+            }
+            if (chave.includes('@')) {
+                const partes = chave.split('@');
+                const local = partes[0];
+                const dominio = partes.slice(1).join('@');
+                if (local.length <= 4) return '****@' + dominio;
+                return '****' + local.slice(4) + '@' + dominio;
+            }
+            return chave;
+        }
+
+        function formatarValor(el) {
+            let v = el.value.replace(/\D/g, '');
+            if (!v) { el.value = ''; return; }
+            v = (parseInt(v, 10) / 100).toFixed(2).replace('.', ',');
+            el.value = v;
+        }
+
+        function valorNumero() {
+            let v = $('valor').value.replace(/\./g, '').replace(',', '.');
+            return Number(v);
+        }
+
+        function campo(id, tamanho, valor) {
+            const s = String(valor);
+            return id + String(s.length).padStart(2, '0') + s;
+        }
+
+        function crc16(str) {
+            let crc = 0xFFFF;
+            for (let i = 0; i < str.length; i++) {
+                crc ^= str.charCodeAt(i) << 8;
+                for (let j = 0; j < 8; j++) {
+                    crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) & 0xFFFF : (crc << 1) & 0xFFFF;
+                }
+            }
+            return crc.toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        function gerarPayload(dados, valor, descricao) {
+            const gui = campo('00', 'br.gov.bcb.pix'.length, 'br.gov.bcb.pix');
+            const chave = campo('01', dados.chave.length, dados.chave);
+            let mai = gui + chave;
+            if (descricao) mai += campo('02', descricao.length, descricao);
+            const merchant = campo('26', mai.length, mai);
+            const nome = limparTexto(dados.nome, 25);
+            const cidade = limparTexto(dados.cidade, 15);
+            let txid = limparTexto(dados.txid || '***', 25) || '***';
+            const txidField = campo('05', txid.length, txid);
+            const additional = campo('62', txidField.length, txidField);
+            let payload = '';
+            payload += campo('00', 2, '01');
+            payload += campo('01', 2, '11');
+            payload += merchant;
+            payload += campo('52', 4, '0000');
+            payload += campo('53', 3, '986');
+            if (valor > 0) {
+                const valorStr = valor.toFixed(2);
+                payload += campo('54', valorStr.length, valorStr);
+            }
+            payload += campo('58', 2, 'BR');
+            payload += campo('59', nome.length, nome);
+            payload += campo('60', cidade.length, cidade);
+            payload += additional;
+            const semCRC = payload + '6304';
+            return semCRC + crc16(semCRC);
+        }
+
+        function getCadastro() {
+            try { return JSON.parse(localStorage.getItem('pixRecebedor') || 'null'); } catch (e) { return null; }
+        }
+
+        function salvarCadastro() {
+            const dados = {
+                nome: limparTexto($('modalNome').value, 25),
+                chave: $('modalChave').value.trim(),
+                cidade: limparTexto($('modalCidade').value, 15),
+                txid: limparTexto($('modalTxid').value, 25) || '***',
+                descricao: limparTexto($('modalDescricao').value, 72),
+                header: limparHeader($('modalHeader').value, 50) || 'PIX Recebimentos'
+            };
+            if (!dados.nome || !dados.chave || !dados.cidade) {
+                $('cadastroStatus').textContent = 'Preencha nome, chave PIX e cidade.';
+                $('cadastroStatus').style.color = '#a42020';
+                return;
+            }
+            if (/\s/.test(dados.chave)) {
+                $('cadastroStatus').textContent = 'A chave PIX não pode conter espaços.';
+                $('cadastroStatus').style.color = '#a42020';
+                return;
+            }
+            localStorage.setItem('pixRecebedor', JSON.stringify(dados));
+            $('cadastroStatus').textContent = '✓ Cadastro salvo!';
+            $('cadastroStatus').style.color = '#0b6b3a';
+            atualizarResumo();
+            atualizarCabecalho(dados.header);
+            fecharModalCadastro();
+            setTimeout(() => { $('cadastroStatus').textContent = ''; }, 3000);
+        }
+
+        function apagarCadastro() {
+            if (confirm('Apagar o cadastro salvo neste aparelho?')) {
+                localStorage.removeItem('pixRecebedor');
+                ['modalHeader','modalNome','modalChave','modalCidade','modalDescricao'].forEach(id => $(id).value = '');
+                $('modalTxid').value = '***';
+                $('cadastroStatus').textContent = 'Cadastro apagado.';
+                $('cadastroStatus').style.color = '#a42020';
+                atualizarResumo();
+                atualizarCabecalho('PIX Recebimentos');
+                fecharModalCadastro();
+            }
+        }
+
+        function atualizarCabecalho(titulo) {
+            const headerTitulo = document.getElementById('headerTitulo');
+            headerTitulo.innerHTML = `<i class="fas fa-cash-register"></i> ${titulo || 'PIX Recebimentos'}`;
+        }
+
+        function abrirModalCadastro() {
+            const dados = getCadastro();
+            if (dados) {
+                $('modalHeader').value = dados.header || 'PIX Recebimentos';
+                $('modalNome').value = dados.nome || '';
+                $('modalChave').value = dados.chave || '';
+                $('modalCidade').value = dados.cidade || '';
+                $('modalTxid').value = dados.txid || '***';
+                $('modalDescricao').value = dados.descricao || '';
+            } else {
+                $('modalHeader').value = 'PIX Recebimentos';
+                $('modalNome').value = '';
+                $('modalChave').value = '';
+                $('modalCidade').value = '';
+                $('modalTxid').value = '***';
+                $('modalDescricao').value = '';
+            }
+            $('cadastroStatus').textContent = '';
+            $('modalCadastro').classList.add('active');
+        }
+
+        function fecharModalCadastro() {
+            $('modalCadastro').classList.remove('active');
+            desabilitarEdicao();
+        }
+
+        document.getElementById('modalCadastro').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalCadastro();
+        });
+
+        function atualizarResumo() {
+            const dados = getCadastro();
+            const div = document.getElementById('resumoRecebedor');
+            if (dados && dados.nome && dados.chave && dados.cidade) {
+                const chaveCompleta = dados.chave;
+                const chaveMascarada = mascararChave(chaveCompleta);
+                div.innerHTML = `
+                    <div class="resumo">
+                        <div class="info">
+                            <strong>Recebedor:</strong> ${dados.nome}<br>
+                            <strong>Chave:</strong> 
+                            <span class="chave-mascarada" title="${chaveCompleta}">${chaveMascarada}</span><br>
+                            <strong>Cidade:</strong> ${dados.cidade}
+                            ${dados.txid && dados.txid !== '***' ? `<br><strong>TXID:</strong> ${dados.txid}` : ''}
+                        </div>
+                        <button class="btn-edit" onclick="abrirModalCadastro()">✎ Editar</button>
+                    </div>
+                `;
+                const gerenciarBtn = document.getElementById('btnGerenciar');
+                if (gerenciarBtn.classList.contains('active')) {
+                    const editBtn = document.querySelector('.resumo .btn-edit');
+                    if (editBtn) { editBtn.classList.add('active'); editBtn.style.opacity = '1'; editBtn.style.pointerEvents = 'auto'; }
+                } else {
+                    desabilitarEdicao();
+                }
+            } else {
+                div.innerHTML = `
+                    <div style="background:#fef6e0; padding:12px 16px; border-radius:10px; border-left:4px solid #f1b04a; margin-bottom:12px;">
+                        <strong>⚠️ Nenhum recebedor cadastrado.</strong>
+                        <button class="primary" onclick="abrirModalCadastro()" style="width:auto; padding:8px 16px; margin-top:6px;">Cadastrar recebedor</button>
+                    </div>
+                `;
+            }
+        }
+
+        function abrirModalRelatorios() {
+            const lista = getRecebimentos();
+            renderizarLista(lista);
+            $('modalRelatorios').classList.add('active');
+        }
+
+        function fecharModalRelatorios() {
+            $('modalRelatorios').classList.remove('active');
+        }
+
+        document.getElementById('modalRelatorios').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalRelatorios();
+        });
+
+        function getRecebimentos() {
+            try { return JSON.parse(localStorage.getItem('pixRecebimentos') || '[]'); } catch (e) { return []; }
+        }
+
+        function salvarRecebimentos(lista) {
+            localStorage.setItem('pixRecebimentos', JSON.stringify(lista));
+        }
+
+        function adicionarRecebimento(valor, descricao, txid) {
+            const now = new Date();
+            const dataStr = now.toISOString().slice(0, 10);
+            const hora = now.toLocaleTimeString('pt-BR');
+            const item = { id: Date.now(), data: dataStr, hora: hora, valor: valor, descricao: descricao || '', txid: txid || '***', status: 'pendente' };
+            const lista = getRecebimentos();
+            lista.unshift(item);
+            salvarRecebimentos(lista);
+            return item;
+        }
+
+        function marcarComoPago(id) {
+            const lista = getRecebimentos();
+            const item = lista.find(i => i.id === id);
+            if (item) {
+                item.status = 'pago';
+                salvarRecebimentos(lista);
+                renderizarLista(lista);
+                return true;
+            }
+            return false;
+        }
+
+        function excluirRecebimento(id) {
+            let lista = getRecebimentos();
+            lista = lista.filter(i => i.id !== id);
+            salvarRecebimentos(lista);
+            renderizarLista(lista);
+        }
+
+        function renderizarLista(lista) {
+            const container = document.getElementById('listaRecebimentos');
+            if (!lista || lista.length === 0) {
+                container.innerHTML = `<div class="sem-dados">Nenhum recebimento encontrado.</div>`;
+                return;
+            }
+            let html = '';
+            let total = 0;
+            let pagoCount = 0;
+            lista.forEach(item => {
+                const valorStr = item.valor.toFixed(2).replace('.', ',');
+                const statusClass = item.status === 'pago' ? 'status-pago' : 'status-pendente';
+                const statusLabel = item.status === 'pago' ? '✅ Pago' : '⏳ Pendente';
+                if (item.status === 'pago') { pagoCount++; total += item.valor; }
+                html += `
+                    <div class="item-recebimento">
+                        <div class="info">
+                            <span class="data">${item.data} ${item.hora}</span>
+                            <span class="valor">R$ ${valorStr}</span>
+                            <span class="descricao">${item.descricao || 'Sem descrição'}</span>
+                            <span class="status ${statusClass}">${statusLabel}</span>
+                        </div>
+                        <div class="acoes">
+                            ${item.status === 'pendente' ? `<button class="secondary btn-pequeno" onclick="marcarComoPago(${item.id})">✅ Confirmar pagamento</button>` : ''}
+                            <button class="danger btn-pequeno" onclick="excluirRecebimento(${item.id})">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+            const totalHTML = `<div class="total">Total recebido (pagos): R$ ${total.toFixed(2).replace('.', ',')} &nbsp;|&nbsp; ${pagoCount} pagos de ${lista.length}</div>`;
+            container.innerHTML = html + totalHTML;
+        }
+
+        function filtrarPorDia() {
+            const data = document.getElementById('filtroData').value;
+            if (!data) { alert('Selecione uma data.'); return; }
+            const lista = getRecebimentos();
+            const filtrados = lista.filter(item => item.data === data);
+            renderizarLista(filtrados);
+        }
+
+        function filtrarPorPeriodo() {
+            const inicio = document.getElementById('filtroInicio').value;
+            const fim = document.getElementById('filtroFim').value;
+            if (!inicio || !fim) { alert('Selecione as duas datas.'); return; }
+            if (inicio > fim) { alert('A data inicial deve ser menor ou igual à data final.'); return; }
+            const lista = getRecebimentos();
+            const filtrados = lista.filter(item => item.data >= inicio && item.data <= fim);
+            renderizarLista(filtrados);
+        }
+
+        function limparFiltros() {
+            document.getElementById('filtroData').value = '';
+            document.getElementById('filtroInicio').value = '';
+            document.getElementById('filtroFim').value = '';
+            const lista = getRecebimentos();
+            renderizarLista(lista);
+        }
+
+        function gerarPix() {
+            const dados = getCadastro();
+            if (!dados || !dados.nome || !dados.chave || !dados.cidade) {
+                $('recebStatus').textContent = 'Cadastre um recebedor primeiro.';
+                $('recebStatus').style.color = '#a42020';
+                abrirModalCadastro();
+                return;
+            }
+            const valor = valorNumero();
+            if (!isFinite(valor) || valor <= 0) {
+                $('recebStatus').textContent = 'Informe um valor maior que zero.';
+                $('recebStatus').style.color = '#a42020';
+                return;
+            }
+            const descricao = limparTexto($('descricaoCobranca').value || dados.descricao, 72);
+            if (/\s/.test(dados.chave)) {
+                $('recebStatus').textContent = 'A chave PIX não pode conter espaços.';
+                $('recebStatus').style.color = '#a42020';
+                return;
+            }
+            const txid = dados.txid || '***';
+            const payload = gerarPayload(dados, valor, descricao);
+            adicionarRecebimento(valor, descricao, txid);
+            $('payload').textContent = payload;
+            $('valorExibido').textContent = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            $('qrcode').innerHTML = '';
+            if (typeof QRCode === 'undefined') {
+                $('recebStatus').textContent = 'Biblioteca QR Code não carregada.';
+                $('recebStatus').style.color = '#a42020';
+                return;
+            }
+            new QRCode($('qrcode'), { text: payload, width: 260, height: 260, correctLevel: QRCode.CorrectLevel.M });
+            document.getElementById('resultado').style.display = 'block';
+            $('recebStatus').textContent = '✓ QR Code gerado. Recebimento pendente.';
+            $('recebStatus').style.color = '#0b6b3a';
+            document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+            $('valor').value = '';
+        }
+
+        async function copiarPix() {
+            const texto = $('payload').textContent;
+            if (!texto) return;
+            try {
+                await navigator.clipboard.writeText(texto);
+                alert('PIX Copia e Cola copiado!');
+            } catch (e) {
+                const ta = document.createElement('textarea');
+                ta.value = texto;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+                alert('PIX Copia e Cola copiado!');
+            }
+        }
+
+        async function compartilharPix() {
+            const texto = $('payload').textContent;
+            if (navigator.share) {
+                try { await navigator.share({ title: 'Pagamento PIX', text: 'PIX Copia e Cola:\n' + texto }); } catch(e) {}
+            } else {
+                copiarPix();
+            }
+        }
+
+        function iniciar() {
+            const dados = getCadastro();
+            if (dados && dados.header) atualizarCabecalho(dados.header);
+            else atualizarCabecalho('PIX Recebimentos');
+            desabilitarEdicao();
+            atualizarResumo();
+            document.getElementById('resultado').style.display = 'none';
+            const hoje = new Date().toISOString().slice(0, 10);
+            document.getElementById('filtroData').value = hoje;
+            document.getElementById('filtroInicio').value = hoje;
+            document.getElementById('filtroFim').value = hoje;
+            const lista = getRecebimentos();
+            renderizarLista(lista);
+        }
+
+        iniciar();
+
+        window.marcarComoPago = marcarComoPago;
+        window.excluirRecebimento = excluirRecebimento;
+        window.filtrarPorDia = filtrarPorDia;
+        window.filtrarPorPeriodo = filtrarPorPeriodo;
+        window.limparFiltros = limparFiltros;
+        window.abrirModalRelatorios = abrirModalRelatorios;
+        window.fecharModalRelatorios = fecharModalRelatorios;
+    </script>
+</body>
+</html>
