@@ -1,0 +1,22 @@
+{
+  "name": "PIX Recebimentos",
+  "short_name": "PIX Receb.",
+  "description": "Gerencie cobranças e recebimentos PIX",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0b6b3a",
+  "theme_color": "#0b6b3a",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1055/1055666.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1055/1055666.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
