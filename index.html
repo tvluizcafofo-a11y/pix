@@ -3,30 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0b6b3a">
+    <meta name="theme-color" content="#0b6b3a" id="metaThemeColor">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>PIX Recebimentos</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* ===== ESTILOS COMPLETOS ===== */
+        /* ===== VARIÁVEIS ===== */
+        :root {
+            --bg-body: #f3f5f7;
+            --bg-card: #ffffff;
+            --bg-header: #0b6b3a;
+            --text-primary: #17202a;
+            --text-secondary: #68737d;
+            --border-color: #cbd2d9;
+            --shadow: 0 3px 14px #00000012;
+            --bg-resumo: #f7faf8;
+            --bg-copy: #f4f6f8;
+            --bg-status-pendente: #fef6e0;
+            --text-status-pendente: #a67c00;
+            --bg-status-pago: #dff0d8;
+            --text-status-pago: #1e7e34;
+            --bg-empty: #fef6e0;
+            --border-empty: #f1b04a;
+        }
+
+        body.dark-mode {
+            --bg-body: #1a1e24;
+            --bg-card: #2a2f38;
+            --bg-header: #0a4d2a;
+            --text-primary: #e8ecf0;
+            --text-secondary: #a0aab5;
+            --border-color: #3f4752;
+            --shadow: 0 3px 14px #00000040;
+            --bg-resumo: #323a44;
+            --bg-copy: #323a44;
+            --bg-status-pendente: #4d3a00;
+            --text-status-pendente: #f1c40f;
+            --bg-status-pago: #1a4a2a;
+            --text-status-pago: #2ecc71;
+            --bg-empty: #4d3a00;
+            --border-empty: #f1b04a;
+        }
+
+        /* ===== ESTILOS BASE ===== */
         * {
             box-sizing: border-box;
         }
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f3f5f7;
-            color: #17202a;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            transition: background 0.3s, color 0.3s;
         }
+
         header {
-            background: #0b6b3a;
+            background: var(--bg-header);
             color: #fff;
-            padding: 20px 16px;
+            padding: 16px 16px 14px;
             text-align: center;
             position: relative;
-            cursor: default;
+            transition: background 0.3s;
         }
         #secretArea {
             position: absolute;
@@ -39,7 +78,7 @@
             background: transparent;
         }
         header h1 {
-            margin: 0 0 6px;
+            margin: 0 0 4px;
             font-size: 25px;
         }
         header h1 i {
@@ -48,27 +87,32 @@
         header p {
             margin: 0;
             opacity: .9;
+            font-size: 14px;
         }
         main {
             max-width: 820px;
             margin: 18px auto;
             padding: 0 12px;
         }
+
         .card {
-            background: #fff;
+            background: var(--bg-card);
             border-radius: 16px;
             padding: 18px;
             margin-bottom: 16px;
-            box-shadow: 0 3px 14px #00000012;
+            box-shadow: var(--shadow);
+            transition: background 0.3s, box-shadow 0.3s;
         }
         h2 {
             margin: 0 0 15px;
             font-size: 19px;
+            color: var(--text-primary);
         }
         label {
             display: block;
             font-weight: bold;
             margin: 12px 0 6px;
+            color: var(--text-primary);
         }
         input,
         select,
@@ -81,8 +125,15 @@
         input,
         textarea {
             padding: 12px;
-            border: 1px solid #cbd2d9;
-            background: #fff;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            transition: background 0.3s, border 0.3s, color 0.3s;
+        }
+        input:focus,
+        textarea:focus {
+            outline: 2px solid #0b6b3a;
+            border-color: transparent;
         }
         input#valor {
             font-size: 24px;
@@ -107,18 +158,28 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
+            transition: background 0.2s, color 0.2s;
         }
         .primary {
             background: #0b6b3a;
             color: #fff;
         }
+        .primary:hover {
+            background: #095a31;
+        }
         .secondary {
-            background: #e8f2ed;
-            color: #0b6b3a;
+            background: var(--bg-resumo);
+            color: var(--text-primary);
+        }
+        .secondary:hover {
+            opacity: 0.8;
         }
         .danger {
             background: #fdeaea;
             color: #a42020;
+        }
+        .danger:hover {
+            background: #fccccc;
         }
         .result {
             text-align: center;
@@ -147,11 +208,13 @@
         }
         .copybox {
             word-break: break-all;
-            background: #f4f6f8;
+            background: var(--bg-copy);
             padding: 12px;
             border-radius: 10px;
             text-align: left;
             font-size: 13px;
+            color: var(--text-primary);
+            transition: background 0.3s;
         }
         .status {
             margin-top: 10px;
@@ -160,10 +223,10 @@
         }
         .small {
             font-size: 12px;
-            color: #68737d;
+            color: var(--text-secondary);
         }
         .resumo {
-            background: #f7faf8;
+            background: var(--bg-resumo);
             padding: 12px 16px;
             border-radius: 10px;
             margin-bottom: 12px;
@@ -171,9 +234,12 @@
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            transition: background 0.3s;
         }
         .resumo .info {
             font-size: 14px;
+            color: var(--text-primary);
+            flex: 1;
         }
         .resumo .info strong {
             display: inline-block;
@@ -181,7 +247,12 @@
         }
         .resumo .info .chave-mascarada {
             cursor: help;
-            border-bottom: 1px dashed #68737d;
+            border-bottom: 1px dashed var(--text-secondary);
+        }
+        .resumo .acoes {
+            display: flex;
+            gap: 6px;
+            align-items: center;
         }
         .resumo .btn-edit {
             background: transparent;
@@ -195,6 +266,7 @@
             transition: all 0.3s;
             opacity: 0.4;
             pointer-events: none;
+            font-size: 13px;
         }
         .resumo .btn-edit.active {
             opacity: 1;
@@ -205,6 +277,31 @@
         .resumo .btn-edit:hover {
             background: #d4e6dc;
         }
+        /* Botão de tema mini no resumo */
+        .btn-tema-mini {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 18px;
+            padding: 4px 6px;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: background 0.2s, transform 0.2s;
+            opacity: 0.6;
+            line-height: 1;
+        }
+        .btn-tema-mini:hover {
+            background: rgba(0,0,0,0.08);
+            transform: scale(1.1);
+            opacity: 1;
+        }
+        body.dark-mode .btn-tema-mini {
+            color: #f1c40f;
+        }
+        body.dark-mode .btn-tema-mini:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
         .modal-overlay {
             display: none;
             position: fixed;
@@ -222,7 +319,7 @@
             display: flex;
         }
         .modal {
-            background: #fff;
+            background: var(--bg-card);
             max-width: 600px;
             width: 100%;
             border-radius: 20px;
@@ -232,7 +329,7 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         }
         .modal h2 {
-            margin-top: 0;
+            color: var(--text-primary);
         }
         .modal .btn-group {
             display: flex;
@@ -244,6 +341,11 @@
         @media (max-width: 560px) {
             .row {
                 grid-template-columns: 1fr;
+            }
+            .resumo .acoes {
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 6px;
             }
         }
         #btnGerenciar {
@@ -270,6 +372,7 @@
         .filtros .grupo label {
             margin: 0 0 4px;
             font-size: 13px;
+            color: var(--text-secondary);
         }
         .filtros .grupo input {
             padding: 8px 10px;
@@ -288,19 +391,21 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 12px;
-            border-bottom: 1px solid #e8edf2;
-            background: #fafcff;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-card);
             border-radius: 8px;
             margin-bottom: 6px;
+            transition: background 0.3s, border 0.3s;
         }
         .item-recebimento .info {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
             font-size: 14px;
+            color: var(--text-primary);
         }
         .item-recebimento .info .data {
-            color: #68737d;
+            color: var(--text-secondary);
             min-width: 100px;
         }
         .item-recebimento .info .valor {
@@ -308,7 +413,7 @@
             color: #0b6b3a;
         }
         .item-recebimento .info .descricao {
-            color: #2c3e50;
+            color: var(--text-primary);
         }
         .item-recebimento .status {
             font-size: 13px;
@@ -317,12 +422,12 @@
             border-radius: 20px;
         }
         .status-pendente {
-            background: #fef6e0;
-            color: #a67c00;
+            background: var(--bg-status-pendente);
+            color: var(--text-status-pendente);
         }
         .status-pago {
-            background: #dff0d8;
-            color: #1e7e34;
+            background: var(--bg-status-pago);
+            color: var(--text-status-pago);
         }
         .item-recebimento .acoes button {
             margin: 0 0 0 8px;
@@ -336,7 +441,7 @@
         }
         .sem-dados {
             text-align: center;
-            color: #68737d;
+            color: var(--text-secondary);
             padding: 20px;
         }
         .total {
@@ -346,6 +451,7 @@
             margin-top: 10px;
             border-top: 2px solid #0b6b3a;
             padding-top: 10px;
+            color: var(--text-primary);
         }
         .botoes-topo {
             display: flex;
@@ -357,6 +463,17 @@
             width: auto;
             padding: 10px 20px;
             margin: 0;
+        }
+
+        /* DICA para chave telefone */
+        .dica-telefone {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            padding-left: 4px;
+        }
+        .dica-telefone i {
+            margin-right: 4px;
         }
     </style>
 </head>
@@ -407,7 +524,10 @@
             <label for="modalNome">Nome do recebedor *</label>
             <input id="modalNome" maxlength="25" placeholder="Ex.: JOAO DA SILVA">
             <label for="modalChave">Chave PIX *</label>
-            <input id="modalChave" maxlength="77" placeholder="CPF, CNPJ, telefone, e-mail ou chave aleatória">
+            <input id="modalChave" maxlength="77" placeholder="Ex.: CPF, e-mail ou +5531999991234">
+            <div class="dica-telefone">
+                <i class="fas fa-info-circle"></i> Para chave telefone, inclua o código do Brasil: <strong>+55</strong> + DDD + número
+            </div>
             <div class="row">
                 <div><label for="modalCidade">Cidade *</label><input id="modalCidade" maxlength="15" placeholder="Ex.: SAO PAULO"></div>
                 <div><label for="modalTxid">Identificação (TXID)</label><input id="modalTxid" maxlength="25" value="***"></div>
@@ -446,6 +566,29 @@
         const $ = id => document.getElementById(id);
         let secretClicks = 0, secretTimer = null;
 
+        // ===== TEMA (MODO ESCURO/CLARO) =====
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            const btn = document.querySelector('.btn-tema-mini');
+            if (btn) {
+                btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            }
+            document.getElementById('metaThemeColor').content = isDark ? '#1a1e24' : '#0b6b3a';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        function loadTheme() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') {
+                document.body.classList.add('dark-mode');
+                const btn = document.querySelector('.btn-tema-mini');
+                if (btn) btn.innerHTML = '<i class="fas fa-sun"></i>';
+                document.getElementById('metaThemeColor').content = '#1a1e24';
+            }
+        }
+
+        // ===== SEGREDO =====
         document.getElementById('secretArea').addEventListener('click', function(e) {
             e.stopPropagation();
             secretClicks++;
@@ -484,6 +627,7 @@
             if (editBtn) { editBtn.classList.remove('active'); editBtn.style.opacity = '0.4'; editBtn.style.pointerEvents = 'none'; }
         }
 
+        // ===== UTILITÁRIOS =====
         function limparTexto(s, max) {
             return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z0-9 .\\-]/g,'').toUpperCase().trim().slice(0,max);
         }
@@ -576,6 +720,7 @@
             return semCRC + crc16(semCRC);
         }
 
+        // ===== CADASTRO =====
         function getCadastro() {
             try { return JSON.parse(localStorage.getItem('pixRecebedor') || 'null'); } catch (e) { return null; }
         }
@@ -656,9 +801,13 @@
             if (e.target === this) fecharModalCadastro();
         });
 
+        // ===== RESUMO DO RECEBEDOR COM BOTÃO DE TEMA MINI =====
         function atualizarResumo() {
             const dados = getCadastro();
             const div = document.getElementById('resumoRecebedor');
+            const isDark = document.body.classList.contains('dark-mode');
+            const iconTema = isDark ? 'fa-sun' : 'fa-moon';
+
             if (dados && dados.nome && dados.chave && dados.cidade) {
                 const chaveCompleta = dados.chave;
                 const chaveMascarada = mascararChave(chaveCompleta);
@@ -671,7 +820,12 @@
                             <strong>Cidade:</strong> ${dados.cidade}
                             ${dados.txid && dados.txid !== '***' ? `<br><strong>TXID:</strong> ${dados.txid}` : ''}
                         </div>
-                        <button class="btn-edit" onclick="abrirModalCadastro()">✎ Editar</button>
+                        <div class="acoes">
+                            <button class="btn-tema-mini" onclick="toggleTheme()" title="Alternar tema">
+                                <i class="fas ${iconTema}"></i>
+                            </button>
+                            <button class="btn-edit" onclick="abrirModalCadastro()">✎ Editar</button>
+                        </div>
                     </div>
                 `;
                 const gerenciarBtn = document.getElementById('btnGerenciar');
@@ -683,14 +837,22 @@
                 }
             } else {
                 div.innerHTML = `
-                    <div style="background:#fef6e0; padding:12px 16px; border-radius:10px; border-left:4px solid #f1b04a; margin-bottom:12px;">
-                        <strong>⚠️ Nenhum recebedor cadastrado.</strong>
-                        <button class="primary" onclick="abrirModalCadastro()" style="width:auto; padding:8px 16px; margin-top:6px;">Cadastrar recebedor</button>
+                    <div class="resumo" style="background:var(--bg-empty); border-left:4px solid var(--border-empty);">
+                        <div class="info">
+                            <strong>⚠️ Nenhum recebedor cadastrado.</strong>
+                            <button class="primary" onclick="abrirModalCadastro()" style="width:auto; padding:8px 16px; margin-top:6px;">Cadastrar recebedor</button>
+                        </div>
+                        <div class="acoes">
+                            <button class="btn-tema-mini" onclick="toggleTheme()" title="Alternar tema">
+                                <i class="fas ${iconTema}"></i>
+                            </button>
+                        </div>
                     </div>
                 `;
             }
         }
 
+        // ===== RELATÓRIOS =====
         function abrirModalRelatorios() {
             const lista = getRecebimentos();
             renderizarLista(lista);
@@ -705,6 +867,7 @@
             if (e.target === this) fecharModalRelatorios();
         });
 
+        // ===== RECEBIMENTOS =====
         function getRecebimentos() {
             try { return JSON.parse(localStorage.getItem('pixRecebimentos') || '[]'); } catch (e) { return []; }
         }
@@ -776,6 +939,7 @@
             container.innerHTML = html + totalHTML;
         }
 
+        // ===== FILTROS =====
         function filtrarPorDia() {
             const data = document.getElementById('filtroData').value;
             if (!data) { alert('Selecione uma data.'); return; }
@@ -802,6 +966,7 @@
             renderizarLista(lista);
         }
 
+        // ===== GERAR QR CODE =====
         function gerarPix() {
             const dados = getCadastro();
             if (!dados || !dados.nome || !dados.chave || !dados.cidade) {
@@ -841,6 +1006,7 @@
             $('valor').value = '';
         }
 
+        // ===== COPIAR E COMPARTILHAR =====
         async function copiarPix() {
             const texto = $('payload').textContent;
             if (!texto) return;
@@ -860,14 +1026,35 @@
 
         async function compartilharPix() {
             const texto = $('payload').textContent;
+            if (!texto) return;
+            const mensagem = texto;
             if (navigator.share) {
-                try { await navigator.share({ title: 'Pagamento PIX', text: 'PIX Copia e Cola:\n' + texto }); } catch(e) {}
+                try {
+                    await navigator.share({ title: 'Pagamento PIX', text: mensagem });
+                } catch (e) {
+                    if (e.name !== 'AbortError') {
+                        alert('Não foi possível compartilhar. Tente copiar o código manualmente.');
+                    }
+                }
             } else {
-                copiarPix();
+                try {
+                    await navigator.clipboard.writeText(mensagem);
+                    alert('Código PIX copiado! Cole no WhatsApp e envie para o pagador.');
+                } catch (e) {
+                    const ta = document.createElement('textarea');
+                    ta.value = mensagem;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    ta.remove();
+                    alert('Código PIX copiado! Cole no WhatsApp e envie para o pagador.');
+                }
             }
         }
 
+        // ===== INICIALIZAÇÃO =====
         function iniciar() {
+            loadTheme();
             const dados = getCadastro();
             if (dados && dados.header) atualizarCabecalho(dados.header);
             else atualizarCabecalho('PIX Recebimentos');
@@ -884,6 +1071,8 @@
 
         iniciar();
 
+        // Expor funções globalmente
+        window.toggleTheme = toggleTheme;
         window.marcarComoPago = marcarComoPago;
         window.excluirRecebimento = excluirRecebimento;
         window.filtrarPorDia = filtrarPorDia;
