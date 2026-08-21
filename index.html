@@ -3,69 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0b6b3a" id="metaThemeColor">
+    <meta name="theme-color" content="#0b6b3a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>PIX Recebimentos</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* ===== VARIÁVEIS ===== */
-        :root {
-            --bg-body: #f3f5f7;
-            --bg-card: #ffffff;
-            --bg-header: #0b6b3a;
-            --text-primary: #17202a;
-            --text-secondary: #68737d;
-            --border-color: #cbd2d9;
-            --shadow: 0 3px 14px #00000012;
-            --bg-resumo: #f7faf8;
-            --bg-copy: #f4f6f8;
-            --bg-status-pendente: #fef6e0;
-            --text-status-pendente: #a67c00;
-            --bg-status-pago: #dff0d8;
-            --text-status-pago: #1e7e34;
-            --bg-empty: #fef6e0;
-            --border-empty: #f1b04a;
-        }
-
-        body.dark-mode {
-            --bg-body: #1a1e24;
-            --bg-card: #2a2f38;
-            --bg-header: #0a4d2a;
-            --text-primary: #e8ecf0;
-            --text-secondary: #a0aab5;
-            --border-color: #3f4752;
-            --shadow: 0 3px 14px #00000040;
-            --bg-resumo: #323a44;
-            --bg-copy: #323a44;
-            --bg-status-pendente: #4d3a00;
-            --text-status-pendente: #f1c40f;
-            --bg-status-pago: #1a4a2a;
-            --text-status-pago: #2ecc71;
-            --bg-empty: #4d3a00;
-            --border-empty: #f1b04a;
-        }
-
-        /* ===== ESTILOS BASE ===== */
+        /* ===== ESTILOS (tema claro fixo) ===== */
         * {
             box-sizing: border-box;
         }
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: var(--bg-body);
-            color: var(--text-primary);
-            transition: background 0.3s, color 0.3s;
+            background: #f3f5f7;
+            color: #17202a;
         }
-
         header {
-            background: var(--bg-header);
+            background: #0b6b3a;
             color: #fff;
             padding: 16px 16px 14px;
             text-align: center;
             position: relative;
-            transition: background 0.3s;
         }
         #secretArea {
             position: absolute;
@@ -94,44 +54,36 @@
             margin: 18px auto;
             padding: 0 12px;
         }
-
         .card {
-            background: var(--bg-card);
+            background: #fff;
             border-radius: 16px;
             padding: 18px;
             margin-bottom: 16px;
-            box-shadow: var(--shadow);
-            transition: background 0.3s, box-shadow 0.3s;
+            box-shadow: 0 3px 14px #00000012;
         }
         h2 {
             margin: 0 0 15px;
             font-size: 19px;
-            color: var(--text-primary);
+            color: #17202a;
         }
         label {
             display: block;
             font-weight: bold;
             margin: 12px 0 6px;
-            color: var(--text-primary);
+            color: #17202a;
         }
-        input,
-        select,
-        button,
-        textarea {
+        input, select, button, textarea {
             width: 100%;
             font: inherit;
             border-radius: 10px;
         }
-        input,
-        textarea {
+        input, textarea {
             padding: 12px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-card);
-            color: var(--text-primary);
-            transition: background 0.3s, border 0.3s, color 0.3s;
+            border: 1px solid #cbd2d9;
+            background: #fff;
+            color: #17202a;
         }
-        input:focus,
-        textarea:focus {
+        input:focus, textarea:focus {
             outline: 2px solid #0b6b3a;
             border-color: transparent;
         }
@@ -158,7 +110,6 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
-            transition: background 0.2s, color 0.2s;
         }
         .primary {
             background: #0b6b3a;
@@ -168,11 +119,11 @@
             background: #095a31;
         }
         .secondary {
-            background: var(--bg-resumo);
-            color: var(--text-primary);
+            background: #e8f2ed;
+            color: #0b6b3a;
         }
         .secondary:hover {
-            opacity: 0.8;
+            background: #d4e6dc;
         }
         .danger {
             background: #fdeaea;
@@ -191,11 +142,10 @@
             background: #fff;
             border-radius: 16px;
             border: 4px solid #0b6b3a;
-            box-shadow: 0 4px 20px rgba(11, 107, 58, 0.2);
+            box-shadow: 0 4px 20px rgba(11,107,58,0.2);
             margin: 8px auto;
         }
-        #qrcode img,
-        #qrcode canvas {
+        #qrcode img, #qrcode canvas {
             max-width: 100%;
             height: auto;
             display: block;
@@ -208,13 +158,12 @@
         }
         .copybox {
             word-break: break-all;
-            background: var(--bg-copy);
+            background: #f4f6f8;
             padding: 12px;
             border-radius: 10px;
             text-align: left;
             font-size: 13px;
-            color: var(--text-primary);
-            transition: background 0.3s;
+            color: #17202a;
         }
         .status {
             margin-top: 10px;
@@ -223,10 +172,10 @@
         }
         .small {
             font-size: 12px;
-            color: var(--text-secondary);
+            color: #68737d;
         }
         .resumo {
-            background: var(--bg-resumo);
+            background: #f7faf8;
             padding: 12px 16px;
             border-radius: 10px;
             margin-bottom: 12px;
@@ -234,11 +183,10 @@
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            transition: background 0.3s;
         }
         .resumo .info {
             font-size: 14px;
-            color: var(--text-primary);
+            color: #17202a;
             flex: 1;
         }
         .resumo .info strong {
@@ -247,12 +195,7 @@
         }
         .resumo .info .chave-mascarada {
             cursor: help;
-            border-bottom: 1px dashed var(--text-secondary);
-        }
-        .resumo .acoes {
-            display: flex;
-            gap: 6px;
-            align-items: center;
+            border-bottom: 1px dashed #68737d;
         }
         .resumo .btn-edit {
             background: transparent;
@@ -263,45 +206,12 @@
             font-weight: bold;
             cursor: pointer;
             margin: 0;
-            transition: all 0.3s;
-            opacity: 0.4;
-            pointer-events: none;
-            font-size: 13px;
-        }
-        .resumo .btn-edit.active {
             opacity: 1;
             pointer-events: auto;
-            background: #e8f2ed;
-            box-shadow: 0 0 0 2px #0b6b3a;
         }
         .resumo .btn-edit:hover {
             background: #d4e6dc;
         }
-        /* Botão de tema mini no resumo */
-        .btn-tema-mini {
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-size: 18px;
-            padding: 4px 6px;
-            cursor: pointer;
-            border-radius: 30px;
-            transition: background 0.2s, transform 0.2s;
-            opacity: 0.6;
-            line-height: 1;
-        }
-        .btn-tema-mini:hover {
-            background: rgba(0,0,0,0.08);
-            transform: scale(1.1);
-            opacity: 1;
-        }
-        body.dark-mode .btn-tema-mini {
-            color: #f1c40f;
-        }
-        body.dark-mode .btn-tema-mini:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
         .modal-overlay {
             display: none;
             position: fixed;
@@ -309,7 +219,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -319,17 +229,18 @@
             display: flex;
         }
         .modal {
-            background: var(--bg-card);
-            max-width: 600px;
+            background: #fff;
+            max-width: 700px;
             width: 100%;
             border-radius: 20px;
             padding: 24px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
         .modal h2 {
-            color: var(--text-primary);
+            margin-top: 0;
+            color: #17202a;
         }
         .modal .btn-group {
             display: flex;
@@ -342,138 +253,68 @@
             .row {
                 grid-template-columns: 1fr;
             }
-            .resumo .acoes {
-                width: 100%;
-                justify-content: flex-end;
-                margin-top: 6px;
-            }
         }
         #btnGerenciar {
             display: none;
-            transition: all 0.3s;
-        }
-        #btnGerenciar.active {
-            display: block;
-            opacity: 1;
-            pointer-events: auto;
         }
 
-        /* Relatórios - dentro do modal */
-        .filtros {
+        /* Estilos para lista de chaves */
+        .lista-chaves {
+            margin: 12px 0;
+        }
+        .item-chave {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: end;
-            margin-bottom: 16px;
-        }
-        .filtros .grupo {
-            flex: 1 1 160px;
-        }
-        .filtros .grupo label {
-            margin: 0 0 4px;
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        .filtros .grupo input {
-            padding: 8px 10px;
-        }
-        .filtros .grupo button {
-            margin: 0;
-            padding: 8px 12px;
-            font-size: 13px;
-        }
-        .lista-recebimentos {
-            margin-top: 12px;
-        }
-        .item-recebimento {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
             align-items: center;
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border-color);
-            background: var(--bg-card);
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-bottom: 1px solid #e8edf2;
+            background: #fafcff;
             border-radius: 8px;
             margin-bottom: 6px;
-            transition: background 0.3s, border 0.3s;
         }
-        .item-recebimento .info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+        .item-chave .chave-texto {
             font-size: 14px;
-            color: var(--text-primary);
+            color: #17202a;
+            flex: 1;
+            margin: 0 10px;
+            word-break: break-all;
         }
-        .item-recebimento .info .data {
-            color: var(--text-secondary);
-            min-width: 100px;
+        .item-chave .acoes-chave button {
+            background: transparent;
+            border: none;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 2px;
         }
-        .item-recebimento .info .valor {
-            font-weight: bold;
+        .item-chave .acoes-chave .editar { color: #0b6b3a; }
+        .item-chave .acoes-chave .excluir { color: #a42020; }
+        .item-chave .selecionar {
+            font-size: 20px;
+            cursor: pointer;
+            color: #cbd2d9;
+        }
+        .item-chave .selecionar.ativa {
             color: #0b6b3a;
         }
-        .item-recebimento .info .descricao {
-            color: var(--text-primary);
-        }
-        .item-recebimento .status {
-            font-size: 13px;
-            font-weight: bold;
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
-        .status-pendente {
-            background: var(--bg-status-pendente);
-            color: var(--text-status-pendente);
-        }
-        .status-pago {
-            background: var(--bg-status-pago);
-            color: var(--text-status-pago);
-        }
-        .item-recebimento .acoes button {
-            margin: 0 0 0 8px;
-            padding: 4px 12px;
-            font-size: 13px;
-        }
-        .btn-pequeno {
-            padding: 6px 14px;
-            font-size: 13px;
-            margin: 0;
-        }
-        .sem-dados {
-            text-align: center;
-            color: var(--text-secondary);
-            padding: 20px;
-        }
-        .total {
-            text-align: right;
-            font-weight: bold;
-            font-size: 16px;
-            margin-top: 10px;
-            border-top: 2px solid #0b6b3a;
-            padding-top: 10px;
-            color: var(--text-primary);
-        }
-        .botoes-topo {
+        .chave-input-group {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
         }
-        .botoes-topo button {
-            width: auto;
-            padding: 10px 20px;
+        .chave-input-group input {
+            flex: 1;
+            padding: 10px 12px;
+        }
+        .chave-input-group button {
             margin: 0;
+            padding: 10px 18px;
+            width: auto;
         }
-
-        /* DICA para chave telefone */
-        .dica-telefone {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-            padding-left: 4px;
-        }
-        .dica-telefone i {
-            margin-right: 4px;
+        .secao-chaves {
+            border-top: 2px solid #e8edf2;
+            padding-top: 16px;
+            margin-top: 16px;
         }
     </style>
 </head>
@@ -496,8 +337,8 @@
             <div id="recebStatus" class="status"></div>
         </section>
 
-        <div class="botoes-topo">
-            <button class="secondary" id="btnGerenciar" onclick="abrirModalCadastro()" style="display:none;">⚙️ Gerenciar recebedor</button>
+        <div class="botoes-topo" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+            <button class="secondary" id="btnGerenciar" onclick="abrirModalGerenciar()" style="display:none;">⚙️ Gerenciar recebedor</button>
             <button class="secondary" onclick="abrirModalRelatorios()">📊 Relatórios</button>
         </div>
 
@@ -514,32 +355,43 @@
         </section>
     </main>
 
-    <!-- MODAL CADASTRO -->
-    <div class="modal-overlay" id="modalCadastro">
+    <!-- MODAL GERENCIAR (RECEBEDOR + CHAVES) -->
+    <div class="modal-overlay" id="modalGerenciar">
         <div class="modal">
-            <h2>👤 Cadastro do recebedor</h2>
-            <p class="small">Os dados ficam salvos apenas neste aparelho/navegador.</p>
+            <h2>⚙️ Gerenciar recebedor e chaves</h2>
+            <p class="small">Os dados ficam salvos apenas neste aparelho.</p>
+
+            <!-- Dados do recebedor -->
             <label for="modalHeader">Título do cabeçalho (opcional)</label>
             <input id="modalHeader" maxlength="50" placeholder="Ex.: Minha Loja - PIX" value="PIX Recebimentos">
+
             <label for="modalNome">Nome do recebedor *</label>
             <input id="modalNome" maxlength="25" placeholder="Ex.: JOAO DA SILVA">
-            <label for="modalChave">Chave PIX *</label>
-            <input id="modalChave" maxlength="77" placeholder="Ex.: CPF, e-mail ou +5531999991234">
-            <div class="dica-telefone">
-                <i class="fas fa-info-circle"></i> Para chave telefone, inclua o código do Brasil: <strong>+55</strong> + DDD + número
-            </div>
+
             <div class="row">
                 <div><label for="modalCidade">Cidade *</label><input id="modalCidade" maxlength="15" placeholder="Ex.: SAO PAULO"></div>
                 <div><label for="modalTxid">Identificação (TXID)</label><input id="modalTxid" maxlength="25" value="***"></div>
             </div>
+
             <label for="modalDescricao">Descrição padrão (opcional)</label>
             <textarea id="modalDescricao" maxlength="72" placeholder="Ex.: Pagamento de produtos"></textarea>
-            <div class="btn-group">
-                <button class="secondary" onclick="fecharModalCadastro()">Cancelar</button>
-                <button class="primary" onclick="salvarCadastro()">💾 Salvar</button>
+
+            <!-- Seção de chaves PIX -->
+            <div class="secao-chaves">
+                <h3 style="margin:0 0 10px;">🔑 Chaves PIX</h3>
+                <div id="listaChaves" class="lista-chaves"></div>
+                <div class="chave-input-group" id="novaChaveGroup">
+                    <input type="text" id="novaChaveInput" placeholder="Ex.: +5531999991234, email@email.com, CPF..." maxlength="77">
+                    <button class="primary" onclick="adicionarChave()" style="margin:0;">➕ Adicionar</button>
+                </div>
+                <div id="statusChaves" class="status" style="margin-top:6px;"></div>
             </div>
-            <div id="cadastroStatus" class="status"></div>
-            <button class="danger" onclick="apagarCadastro()" style="margin-top:16px;">🗑️ Apagar cadastro</button>
+
+            <div class="btn-group" style="margin-top:18px;">
+                <button class="secondary" onclick="fecharModalGerenciar()">Fechar</button>
+                <button class="primary" onclick="salvarConfiguracoes()">💾 Salvar tudo</button>
+            </div>
+            <div id="geralStatus" class="status"></div>
         </div>
     </div>
 
@@ -547,14 +399,14 @@
     <div class="modal-overlay" id="modalRelatorios">
         <div class="modal" style="max-width: 820px;">
             <h2>📊 Relatórios de recebimentos</h2>
-            <div class="filtros">
-                <div class="grupo"><label>Dia específico</label><input type="date" id="filtroData"></div>
-                <div class="grupo"><button class="secondary btn-pequeno" onclick="filtrarPorDia()">🔍 Filtrar dia</button></div>
-                <div class="grupo"><label>Período de</label><input type="date" id="filtroInicio"></div>
-                <div class="grupo"><label>até</label><input type="date" id="filtroFim"></div>
-                <div class="grupo"><button class="secondary btn-pequeno" onclick="filtrarPorPeriodo()">🔍 Filtrar período</button></div>
-                <div class="grupo"><button class="secondary btn-pequeno" onclick="limparFiltros()">🔄 Mostrar todos</button></div>
-                <div class="grupo"><button class="secondary btn-pequeno" onclick="fecharModalRelatorios()">✖ Fechar</button></div>
+            <div class="filtros" style="display:flex; flex-wrap:wrap; gap:12px; align-items:end; margin-bottom:16px;">
+                <div style="flex:1 1 160px;"><label style="margin:0 0 4px; font-size:13px;">Dia específico</label><input type="date" id="filtroData"></div>
+                <div><button class="secondary btn-pequeno" onclick="filtrarPorDia()">🔍 Filtrar dia</button></div>
+                <div style="flex:1 1 160px;"><label style="margin:0 0 4px; font-size:13px;">Período de</label><input type="date" id="filtroInicio"></div>
+                <div style="flex:1 1 160px;"><label style="margin:0 0 4px; font-size:13px;">até</label><input type="date" id="filtroFim"></div>
+                <div><button class="secondary btn-pequeno" onclick="filtrarPorPeriodo()">🔍 Filtrar período</button></div>
+                <div><button class="secondary btn-pequeno" onclick="limparFiltros()">🔄 Mostrar todos</button></div>
+                <div><button class="secondary btn-pequeno" onclick="fecharModalRelatorios()">✖ Fechar</button></div>
             </div>
             <div id="listaRecebimentos" class="lista-recebimentos"></div>
         </div>
@@ -566,29 +418,7 @@
         const $ = id => document.getElementById(id);
         let secretClicks = 0, secretTimer = null;
 
-        // ===== TEMA (MODO ESCURO/CLARO) =====
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            const btn = document.querySelector('.btn-tema-mini');
-            if (btn) {
-                btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-            }
-            document.getElementById('metaThemeColor').content = isDark ? '#1a1e24' : '#0b6b3a';
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        }
-
-        function loadTheme() {
-            const saved = localStorage.getItem('theme');
-            if (saved === 'dark') {
-                document.body.classList.add('dark-mode');
-                const btn = document.querySelector('.btn-tema-mini');
-                if (btn) btn.innerHTML = '<i class="fas fa-sun"></i>';
-                document.getElementById('metaThemeColor').content = '#1a1e24';
-            }
-        }
-
-        // ===== SEGREDO =====
+        // ---------- SEGREDO: 7 cliques no canto superior direito ----------
         document.getElementById('secretArea').addEventListener('click', function(e) {
             e.stopPropagation();
             secretClicks++;
@@ -599,7 +429,12 @@
                 secretClicks = 0;
                 clearTimeout(secretTimer);
                 secretTimer = null;
-                habilitarEdicao();
+                // Exibe o botão "Gerenciar" e abre o modal
+                const btn = document.getElementById('btnGerenciar');
+                btn.style.display = 'block';
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+                abrirModalGerenciar();
                 const area = document.getElementById('secretArea');
                 area.style.background = 'rgba(255,255,255,0.2)';
                 setTimeout(() => { area.style.background = 'transparent'; }, 300);
@@ -607,27 +442,7 @@
             }
         });
 
-        function habilitarEdicao() {
-            const btn = document.getElementById('btnGerenciar');
-            btn.classList.add('active');
-            btn.style.display = 'block';
-            btn.style.opacity = '1';
-            btn.style.pointerEvents = 'auto';
-            const editBtn = document.querySelector('.resumo .btn-edit');
-            if (editBtn) { editBtn.classList.add('active'); editBtn.style.opacity = '1'; editBtn.style.pointerEvents = 'auto'; }
-        }
-
-        function desabilitarEdicao() {
-            const btn = document.getElementById('btnGerenciar');
-            btn.classList.remove('active');
-            btn.style.display = 'none';
-            btn.style.opacity = '0';
-            btn.style.pointerEvents = 'none';
-            const editBtn = document.querySelector('.resumo .btn-edit');
-            if (editBtn) { editBtn.classList.remove('active'); editBtn.style.opacity = '0.4'; editBtn.style.pointerEvents = 'none'; }
-        }
-
-        // ===== UTILITÁRIOS =====
+        // ---------- UTILITÁRIOS ----------
         function limparTexto(s, max) {
             return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z0-9 .\\-]/g,'').toUpperCase().trim().slice(0,max);
         }
@@ -691,10 +506,10 @@
             return crc.toString(16).toUpperCase().padStart(4, '0');
         }
 
-        function gerarPayload(dados, valor, descricao) {
+        function gerarPayload(dados, chave, valor, descricao) {
             const gui = campo('00', 'br.gov.bcb.pix'.length, 'br.gov.bcb.pix');
-            const chave = campo('01', dados.chave.length, dados.chave);
-            let mai = gui + chave;
+            const chaveField = campo('01', chave.length, chave);
+            let mai = gui + chaveField;
             if (descricao) mai += campo('02', descricao.length, descricao);
             const merchant = campo('26', mai.length, mai);
             const nome = limparTexto(dados.nome, 25);
@@ -720,50 +535,238 @@
             return semCRC + crc16(semCRC);
         }
 
-        // ===== CADASTRO =====
-        function getCadastro() {
-            try { return JSON.parse(localStorage.getItem('pixRecebedor') || 'null'); } catch (e) { return null; }
-        }
-
-        function salvarCadastro() {
-            const dados = {
-                nome: limparTexto($('modalNome').value, 25),
-                chave: $('modalChave').value.trim(),
-                cidade: limparTexto($('modalCidade').value, 15),
-                txid: limparTexto($('modalTxid').value, 25) || '***',
-                descricao: limparTexto($('modalDescricao').value, 72),
-                header: limparHeader($('modalHeader').value, 50) || 'PIX Recebimentos'
+        // ---------- GERENCIAMENTO DE DADOS ----------
+        function getConfig() {
+            try {
+                const raw = localStorage.getItem('pixConfig');
+                if (raw) {
+                    const config = JSON.parse(raw);
+                    if (config.chaves && config.chaves.length > 0) return config;
+                }
+            } catch(e) {}
+            // Valor padrão
+            return {
+                nome: '',
+                cidade: '',
+                txid: '***',
+                descricao: '',
+                header: 'PIX Recebimentos',
+                chaves: [],
+                chaveAtiva: null
             };
-            if (!dados.nome || !dados.chave || !dados.cidade) {
-                $('cadastroStatus').textContent = 'Preencha nome, chave PIX e cidade.';
-                $('cadastroStatus').style.color = '#a42020';
-                return;
-            }
-            if (/\s/.test(dados.chave)) {
-                $('cadastroStatus').textContent = 'A chave PIX não pode conter espaços.';
-                $('cadastroStatus').style.color = '#a42020';
-                return;
-            }
-            localStorage.setItem('pixRecebedor', JSON.stringify(dados));
-            $('cadastroStatus').textContent = '✓ Cadastro salvo!';
-            $('cadastroStatus').style.color = '#0b6b3a';
-            atualizarResumo();
-            atualizarCabecalho(dados.header);
-            fecharModalCadastro();
-            setTimeout(() => { $('cadastroStatus').textContent = ''; }, 3000);
         }
 
-        function apagarCadastro() {
-            if (confirm('Apagar o cadastro salvo neste aparelho?')) {
-                localStorage.removeItem('pixRecebedor');
-                ['modalHeader','modalNome','modalChave','modalCidade','modalDescricao'].forEach(id => $(id).value = '');
-                $('modalTxid').value = '***';
-                $('cadastroStatus').textContent = 'Cadastro apagado.';
-                $('cadastroStatus').style.color = '#a42020';
-                atualizarResumo();
-                atualizarCabecalho('PIX Recebimentos');
-                fecharModalCadastro();
+        function saveConfig(config) {
+            localStorage.setItem('pixConfig', JSON.stringify(config));
+        }
+
+        function getChaveAtiva(config) {
+            if (!config.chaves || config.chaves.length === 0) return null;
+            if (config.chaveAtiva !== null && config.chaves.some(c => c.id === config.chaveAtiva)) {
+                return config.chaves.find(c => c.id === config.chaveAtiva).chave;
             }
+            // Se não tiver ativa, pega a primeira
+            config.chaveAtiva = config.chaves[0].id;
+            saveConfig(config);
+            return config.chaves[0].chave;
+        }
+
+        // ---------- ATUALIZAR INTERFACE ----------
+        function atualizarResumo() {
+            const config = getConfig();
+            const div = document.getElementById('resumoRecebedor');
+            const chaveAtiva = config.chaveAtiva !== null ? config.chaves.find(c => c.id === config.chaveAtiva) : null;
+            const chaveStr = chaveAtiva ? chaveAtiva.chave : 'Nenhuma chave cadastrada';
+            const chaveMasc = chaveAtiva ? mascararChave(chaveAtiva.chave) : '—';
+
+            if (config.nome && config.cidade && chaveAtiva) {
+                div.innerHTML = `
+                    <div class="resumo">
+                        <div class="info">
+                            <strong>Recebedor:</strong> ${config.nome}<br>
+                            <strong>Chave:</strong> 
+                            <span class="chave-mascarada" title="${chaveStr}">${chaveMasc}</span><br>
+                            <strong>Cidade:</strong> ${config.cidade}
+                            ${config.txid && config.txid !== '***' ? `<br><strong>TXID:</strong> ${config.txid}` : ''}
+                        </div>
+                        <button class="btn-edit" onclick="abrirModalGerenciar()">✎ Editar</button>
+                    </div>
+                `;
+            } else {
+                div.innerHTML = `
+                    <div style="background:#fef6e0; padding:12px 16px; border-radius:10px; border-left:4px solid #f1b04a; margin-bottom:12px;">
+                        <strong>⚠️ Complete o cadastro do recebedor e adicione pelo menos uma chave PIX.</strong>
+                        <button class="primary" onclick="abrirModalGerenciar()" style="width:auto; padding:8px 16px; margin-top:6px;">Configurar agora</button>
+                    </div>
+                `;
+            }
+        }
+
+        // ---------- MODAL GERENCIAR ----------
+        function abrirModalGerenciar() {
+            const config = getConfig();
+            // Preenche campos
+            $('modalHeader').value = config.header || 'PIX Recebimentos';
+            $('modalNome').value = config.nome || '';
+            $('modalCidade').value = config.cidade || '';
+            $('modalTxid').value = config.txid || '***';
+            $('modalDescricao').value = config.descricao || '';
+            // Exibe lista de chaves
+            renderizarListaChaves(config);
+            $('modalGerenciar').classList.add('active');
+            $('geralStatus').textContent = '';
+            $('statusChaves').textContent = '';
+            // Limpa campo de nova chave
+            $('novaChaveInput').value = '';
+        }
+
+        function fecharModalGerenciar() {
+            $('modalGerenciar').classList.remove('active');
+            // Reativa o segredo para esconder o botão se não for usado
+            // (mas mantemos disponível)
+        }
+
+        function renderizarListaChaves(config) {
+            const container = document.getElementById('listaChaves');
+            if (!config.chaves || config.chaves.length === 0) {
+                container.innerHTML = `<div style="padding:12px; text-align:center; color:#68737d;">Nenhuma chave cadastrada.</div>`;
+                return;
+            }
+            let html = '';
+            config.chaves.forEach(c => {
+                const isAtiva = (c.id === config.chaveAtiva);
+                const chaveMasc = mascararChave(c.chave);
+                html += `
+                    <div class="item-chave">
+                        <span class="selecionar ${isAtiva ? 'ativa' : ''}" onclick="selecionarChave(${c.id})" title="Tornar ativa">
+                            ${isAtiva ? '⏺' : '○'}
+                        </span>
+                        <span class="chave-texto" title="${c.chave}">${chaveMasc}</span>
+                        <div class="acoes-chave">
+                            <button class="editar" onclick="editarChave(${c.id})" title="Editar"><i class="fas fa-pen"></i></button>
+                            <button class="excluir" onclick="excluirChave(${c.id})" title="Excluir"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function selecionarChave(id) {
+            const config = getConfig();
+            if (config.chaves.some(c => c.id === id)) {
+                config.chaveAtiva = id;
+                saveConfig(config);
+                renderizarListaChaves(config);
+                atualizarResumo();
+                $('statusChaves').textContent = '✓ Chave ativa alterada.';
+                $('statusChaves').style.color = '#0b6b3a';
+                setTimeout(() => { $('statusChaves').textContent = ''; }, 2000);
+            }
+        }
+
+        function editarChave(id) {
+            const config = getConfig();
+            const chave = config.chaves.find(c => c.id === id);
+            if (!chave) return;
+            const nova = prompt('Editar chave PIX:', chave.chave);
+            if (nova !== null && nova.trim() !== '') {
+                const valor = nova.trim();
+                if (valor.includes(' ')) {
+                    $('statusChaves').textContent = 'A chave não pode conter espaços.';
+                    $('statusChaves').style.color = '#a42020';
+                    return;
+                }
+                chave.chave = valor;
+                saveConfig(config);
+                renderizarListaChaves(config);
+                atualizarResumo();
+                $('statusChaves').textContent = '✓ Chave atualizada.';
+                $('statusChaves').style.color = '#0b6b3a';
+                setTimeout(() => { $('statusChaves').textContent = ''; }, 2000);
+            }
+        }
+
+        function excluirChave(id) {
+            if (!confirm('Remover esta chave PIX?')) return;
+            const config = getConfig();
+            const idx = config.chaves.findIndex(c => c.id === id);
+            if (idx === -1) return;
+            config.chaves.splice(idx, 1);
+            if (config.chaveAtiva === id) {
+                config.chaveAtiva = config.chaves.length > 0 ? config.chaves[0].id : null;
+            }
+            saveConfig(config);
+            renderizarListaChaves(config);
+            atualizarResumo();
+            $('statusChaves').textContent = '✓ Chave removida.';
+            $('statusChaves').style.color = '#0b6b3a';
+            setTimeout(() => { $('statusChaves').textContent = ''; }, 2000);
+        }
+
+        function adicionarChave() {
+            const input = document.getElementById('novaChaveInput');
+            const valor = input.value.trim();
+            if (!valor) {
+                $('statusChaves').textContent = 'Digite uma chave PIX.';
+                $('statusChaves').style.color = '#a42020';
+                return;
+            }
+            if (valor.includes(' ')) {
+                $('statusChaves').textContent = 'A chave não pode conter espaços.';
+                $('statusChaves').style.color = '#a42020';
+                return;
+            }
+            const config = getConfig();
+            if (config.chaves.some(c => c.chave === valor)) {
+                $('statusChaves').textContent = 'Esta chave já está cadastrada.';
+                $('statusChaves').style.color = '#a42020';
+                return;
+            }
+            const newId = Date.now();
+            config.chaves.push({ id: newId, chave: valor });
+            if (!config.chaveAtiva) {
+                config.chaveAtiva = newId;
+            }
+            saveConfig(config);
+            renderizarListaChaves(config);
+            atualizarResumo();
+            input.value = '';
+            $('statusChaves').textContent = '✓ Chave adicionada!';
+            $('statusChaves').style.color = '#0b6b3a';
+            setTimeout(() => { $('statusChaves').textContent = ''; }, 2000);
+        }
+
+        function salvarConfiguracoes() {
+            const config = getConfig();
+            config.header = limparHeader($('modalHeader').value, 50) || 'PIX Recebimentos';
+            config.nome = limparTexto($('modalNome').value, 25);
+            config.cidade = limparTexto($('modalCidade').value, 15);
+            config.txid = limparTexto($('modalTxid').value, 25) || '***';
+            config.descricao = limparTexto($('modalDescricao').value, 72);
+
+            if (!config.nome || !config.cidade) {
+                $('geralStatus').textContent = 'Preencha nome e cidade.';
+                $('geralStatus').style.color = '#a42020';
+                return;
+            }
+            if (!config.chaves || config.chaves.length === 0) {
+                $('geralStatus').textContent = 'Adicione pelo menos uma chave PIX.';
+                $('geralStatus').style.color = '#a42020';
+                return;
+            }
+            // Garante que há uma chave ativa
+            if (config.chaveAtiva === null || !config.chaves.some(c => c.id === config.chaveAtiva)) {
+                config.chaveAtiva = config.chaves[0].id;
+            }
+            saveConfig(config);
+            atualizarResumo();
+            atualizarCabecalho(config.header);
+            $('geralStatus').textContent = '✓ Configurações salvas!';
+            $('geralStatus').style.color = '#0b6b3a';
+            setTimeout(() => { $('geralStatus').textContent = ''; }, 3000);
+            // Fecha o modal após salvar?
+            // Deixamos aberto para o usuário continuar editando, mas pode fechar se quiser.
         }
 
         function atualizarCabecalho(titulo) {
@@ -771,122 +774,36 @@
             headerTitulo.innerHTML = `<i class="fas fa-cash-register"></i> ${titulo || 'PIX Recebimentos'}`;
         }
 
-        function abrirModalCadastro() {
-            const dados = getCadastro();
-            if (dados) {
-                $('modalHeader').value = dados.header || 'PIX Recebimentos';
-                $('modalNome').value = dados.nome || '';
-                $('modalChave').value = dados.chave || '';
-                $('modalCidade').value = dados.cidade || '';
-                $('modalTxid').value = dados.txid || '***';
-                $('modalDescricao').value = dados.descricao || '';
-            } else {
-                $('modalHeader').value = 'PIX Recebimentos';
-                $('modalNome').value = '';
-                $('modalChave').value = '';
-                $('modalCidade').value = '';
-                $('modalTxid').value = '***';
-                $('modalDescricao').value = '';
-            }
-            $('cadastroStatus').textContent = '';
-            $('modalCadastro').classList.add('active');
-        }
-
-        function fecharModalCadastro() {
-            $('modalCadastro').classList.remove('active');
-            desabilitarEdicao();
-        }
-
-        document.getElementById('modalCadastro').addEventListener('click', function(e) {
-            if (e.target === this) fecharModalCadastro();
-        });
-
-        // ===== RESUMO DO RECEBEDOR COM BOTÃO DE TEMA MINI =====
-        function atualizarResumo() {
-            const dados = getCadastro();
-            const div = document.getElementById('resumoRecebedor');
-            const isDark = document.body.classList.contains('dark-mode');
-            const iconTema = isDark ? 'fa-sun' : 'fa-moon';
-
-            if (dados && dados.nome && dados.chave && dados.cidade) {
-                const chaveCompleta = dados.chave;
-                const chaveMascarada = mascararChave(chaveCompleta);
-                div.innerHTML = `
-                    <div class="resumo">
-                        <div class="info">
-                            <strong>Recebedor:</strong> ${dados.nome}<br>
-                            <strong>Chave:</strong> 
-                            <span class="chave-mascarada" title="${chaveCompleta}">${chaveMascarada}</span><br>
-                            <strong>Cidade:</strong> ${dados.cidade}
-                            ${dados.txid && dados.txid !== '***' ? `<br><strong>TXID:</strong> ${dados.txid}` : ''}
-                        </div>
-                        <div class="acoes">
-                            <button class="btn-tema-mini" onclick="toggleTheme()" title="Alternar tema">
-                                <i class="fas ${iconTema}"></i>
-                            </button>
-                            <button class="btn-edit" onclick="abrirModalCadastro()">✎ Editar</button>
-                        </div>
-                    </div>
-                `;
-                const gerenciarBtn = document.getElementById('btnGerenciar');
-                if (gerenciarBtn.classList.contains('active')) {
-                    const editBtn = document.querySelector('.resumo .btn-edit');
-                    if (editBtn) { editBtn.classList.add('active'); editBtn.style.opacity = '1'; editBtn.style.pointerEvents = 'auto'; }
-                } else {
-                    desabilitarEdicao();
-                }
-            } else {
-                div.innerHTML = `
-                    <div class="resumo" style="background:var(--bg-empty); border-left:4px solid var(--border-empty);">
-                        <div class="info">
-                            <strong>⚠️ Nenhum recebedor cadastrado.</strong>
-                            <button class="primary" onclick="abrirModalCadastro()" style="width:auto; padding:8px 16px; margin-top:6px;">Cadastrar recebedor</button>
-                        </div>
-                        <div class="acoes">
-                            <button class="btn-tema-mini" onclick="toggleTheme()" title="Alternar tema">
-                                <i class="fas ${iconTema}"></i>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        // ===== RELATÓRIOS =====
+        // ---------- MODAL RELATÓRIOS ----------
         function abrirModalRelatorios() {
             const lista = getRecebimentos();
             renderizarLista(lista);
             $('modalRelatorios').classList.add('active');
         }
-
         function fecharModalRelatorios() {
             $('modalRelatorios').classList.remove('active');
         }
-
         document.getElementById('modalRelatorios').addEventListener('click', function(e) {
             if (e.target === this) fecharModalRelatorios();
         });
 
-        // ===== RECEBIMENTOS =====
+        // ---------- RECEBIMENTOS ----------
         function getRecebimentos() {
             try { return JSON.parse(localStorage.getItem('pixRecebimentos') || '[]'); } catch (e) { return []; }
         }
-
         function salvarRecebimentos(lista) {
             localStorage.setItem('pixRecebimentos', JSON.stringify(lista));
         }
-
-        function adicionarRecebimento(valor, descricao, txid) {
+        function adicionarRecebimento(valor, descricao, txid, chave) {
             const now = new Date();
             const dataStr = now.toISOString().slice(0, 10);
             const hora = now.toLocaleTimeString('pt-BR');
-            const item = { id: Date.now(), data: dataStr, hora: hora, valor: valor, descricao: descricao || '', txid: txid || '***', status: 'pendente' };
+            const item = { id: Date.now(), data: dataStr, hora: hora, valor, descricao: descricao || '', txid: txid || '***', chave: chave || '', status: 'pendente' };
             const lista = getRecebimentos();
             lista.unshift(item);
             salvarRecebimentos(lista);
             return item;
         }
-
         function marcarComoPago(id) {
             const lista = getRecebimentos();
             const item = lista.find(i => i.id === id);
@@ -898,7 +815,6 @@
             }
             return false;
         }
-
         function excluirRecebimento(id) {
             let lista = getRecebimentos();
             lista = lista.filter(i => i.id !== id);
@@ -909,37 +825,37 @@
         function renderizarLista(lista) {
             const container = document.getElementById('listaRecebimentos');
             if (!lista || lista.length === 0) {
-                container.innerHTML = `<div class="sem-dados">Nenhum recebimento encontrado.</div>`;
+                container.innerHTML = `<div class="sem-dados" style="text-align:center;color:#68737d;padding:20px;">Nenhum recebimento encontrado.</div>`;
                 return;
             }
             let html = '';
-            let total = 0;
-            let pagoCount = 0;
+            let total = 0, pagoCount = 0;
             lista.forEach(item => {
                 const valorStr = item.valor.toFixed(2).replace('.', ',');
                 const statusClass = item.status === 'pago' ? 'status-pago' : 'status-pendente';
                 const statusLabel = item.status === 'pago' ? '✅ Pago' : '⏳ Pendente';
                 if (item.status === 'pago') { pagoCount++; total += item.valor; }
+                const chaveExib = item.chave ? mascararChave(item.chave) : '—';
                 html += `
-                    <div class="item-recebimento">
-                        <div class="info">
-                            <span class="data">${item.data} ${item.hora}</span>
-                            <span class="valor">R$ ${valorStr}</span>
-                            <span class="descricao">${item.descricao || 'Sem descrição'}</span>
-                            <span class="status ${statusClass}">${statusLabel}</span>
+                    <div class="item-recebimento" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #e8edf2;background:#fafcff;border-radius:8px;margin-bottom:6px;">
+                        <div class="info" style="display:flex;flex-wrap:wrap;gap:10px;font-size:14px;color:#17202a;">
+                            <span style="color:#68737d;min-width:100px;">${item.data} ${item.hora}</span>
+                            <span style="font-weight:bold;color:#0b6b3a;">R$ ${valorStr}</span>
+                            <span>${item.descricao || 'Sem descrição'}</span>
+                            <span style="font-size:12px;color:#68737d;">Chave: ${chaveExib}</span>
+                            <span class="status ${statusClass}" style="font-size:13px;font-weight:bold;padding:4px 12px;border-radius:20px;background:${item.status === 'pago' ? '#dff0d8' : '#fef6e0'};color:${item.status === 'pago' ? '#1e7e34' : '#a67c00'};">${statusLabel}</span>
                         </div>
-                        <div class="acoes">
-                            ${item.status === 'pendente' ? `<button class="secondary btn-pequeno" onclick="marcarComoPago(${item.id})">✅ Confirmar pagamento</button>` : ''}
-                            <button class="danger btn-pequeno" onclick="excluirRecebimento(${item.id})">🗑️</button>
+                        <div class="acoes" style="display:flex;gap:4px;">
+                            ${item.status === 'pendente' ? `<button class="secondary btn-pequeno" onclick="marcarComoPago(${item.id})" style="padding:4px 12px;font-size:13px;margin:0;">✅ Confirmar</button>` : ''}
+                            <button class="danger btn-pequeno" onclick="excluirRecebimento(${item.id})" style="padding:4px 12px;font-size:13px;margin:0;">🗑️</button>
                         </div>
                     </div>
                 `;
             });
-            const totalHTML = `<div class="total">Total recebido (pagos): R$ ${total.toFixed(2).replace('.', ',')} &nbsp;|&nbsp; ${pagoCount} pagos de ${lista.length}</div>`;
+            const totalHTML = `<div class="total" style="text-align:right;font-weight:bold;font-size:16px;margin-top:10px;border-top:2px solid #0b6b3a;padding-top:10px;color:#17202a;">Total recebido (pagos): R$ ${total.toFixed(2).replace('.', ',')} &nbsp;|&nbsp; ${pagoCount} pagos de ${lista.length}</div>`;
             container.innerHTML = html + totalHTML;
         }
 
-        // ===== FILTROS =====
         function filtrarPorDia() {
             const data = document.getElementById('filtroData').value;
             if (!data) { alert('Selecione uma data.'); return; }
@@ -947,17 +863,15 @@
             const filtrados = lista.filter(item => item.data === data);
             renderizarLista(filtrados);
         }
-
         function filtrarPorPeriodo() {
             const inicio = document.getElementById('filtroInicio').value;
             const fim = document.getElementById('filtroFim').value;
             if (!inicio || !fim) { alert('Selecione as duas datas.'); return; }
-            if (inicio > fim) { alert('A data inicial deve ser menor ou igual à data final.'); return; }
+            if (inicio > fim) { alert('Data inicial deve ser <= final.'); return; }
             const lista = getRecebimentos();
             const filtrados = lista.filter(item => item.data >= inicio && item.data <= fim);
             renderizarLista(filtrados);
         }
-
         function limparFiltros() {
             document.getElementById('filtroData').value = '';
             document.getElementById('filtroInicio').value = '';
@@ -966,30 +880,44 @@
             renderizarLista(lista);
         }
 
-        // ===== GERAR QR CODE =====
+        // ---------- GERAR QR CODE ----------
         function gerarPix() {
-            const dados = getCadastro();
-            if (!dados || !dados.nome || !dados.chave || !dados.cidade) {
-                $('recebStatus').textContent = 'Cadastre um recebedor primeiro.';
+            const config = getConfig();
+            if (!config.nome || !config.cidade) {
+                $('recebStatus').textContent = 'Configure o recebedor primeiro.';
                 $('recebStatus').style.color = '#a42020';
-                abrirModalCadastro();
+                abrirModalGerenciar();
                 return;
             }
+            if (!config.chaves || config.chaves.length === 0) {
+                $('recebStatus').textContent = 'Cadastre pelo menos uma chave PIX.';
+                $('recebStatus').style.color = '#a42020';
+                abrirModalGerenciar();
+                return;
+            }
+            const chaveAtiva = config.chaves.find(c => c.id === config.chaveAtiva);
+            if (!chaveAtiva) {
+                $('recebStatus').textContent = 'Selecione uma chave ativa.';
+                $('recebStatus').style.color = '#a42020';
+                abrirModalGerenciar();
+                return;
+            }
+            const chave = chaveAtiva.chave;
             const valor = valorNumero();
             if (!isFinite(valor) || valor <= 0) {
                 $('recebStatus').textContent = 'Informe um valor maior que zero.';
                 $('recebStatus').style.color = '#a42020';
                 return;
             }
-            const descricao = limparTexto($('descricaoCobranca').value || dados.descricao, 72);
-            if (/\s/.test(dados.chave)) {
+            const descricao = limparTexto($('descricaoCobranca').value || config.descricao, 72);
+            if (/\s/.test(chave)) {
                 $('recebStatus').textContent = 'A chave PIX não pode conter espaços.';
                 $('recebStatus').style.color = '#a42020';
                 return;
             }
-            const txid = dados.txid || '***';
-            const payload = gerarPayload(dados, valor, descricao);
-            adicionarRecebimento(valor, descricao, txid);
+            const txid = config.txid || '***';
+            const payload = gerarPayload(config, chave, valor, descricao);
+            adicionarRecebimento(valor, descricao, txid, chave);
             $('payload').textContent = payload;
             $('valorExibido').textContent = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
             $('qrcode').innerHTML = '';
@@ -1006,7 +934,7 @@
             $('valor').value = '';
         }
 
-        // ===== COPIAR E COMPARTILHAR =====
+        // ---------- COPIAR E COMPARTILHAR ----------
         async function copiarPix() {
             const texto = $('payload').textContent;
             if (!texto) return;
@@ -1033,13 +961,13 @@
                     await navigator.share({ title: 'Pagamento PIX', text: mensagem });
                 } catch (e) {
                     if (e.name !== 'AbortError') {
-                        alert('Não foi possível compartilhar. Tente copiar o código manualmente.');
+                        alert('Não foi possível compartilhar.');
                     }
                 }
             } else {
                 try {
                     await navigator.clipboard.writeText(mensagem);
-                    alert('Código PIX copiado! Cole no WhatsApp e envie para o pagador.');
+                    alert('Código PIX copiado! Cole e envie.');
                 } catch (e) {
                     const ta = document.createElement('textarea');
                     ta.value = mensagem;
@@ -1047,18 +975,15 @@
                     ta.select();
                     document.execCommand('copy');
                     ta.remove();
-                    alert('Código PIX copiado! Cole no WhatsApp e envie para o pagador.');
+                    alert('Código PIX copiado! Cole e envie.');
                 }
             }
         }
 
-        // ===== INICIALIZAÇÃO =====
+        // ---------- INICIALIZAÇÃO ----------
         function iniciar() {
-            loadTheme();
-            const dados = getCadastro();
-            if (dados && dados.header) atualizarCabecalho(dados.header);
-            else atualizarCabecalho('PIX Recebimentos');
-            desabilitarEdicao();
+            const config = getConfig();
+            atualizarCabecalho(config.header || 'PIX Recebimentos');
             atualizarResumo();
             document.getElementById('resultado').style.display = 'none';
             const hoje = new Date().toISOString().slice(0, 10);
@@ -1067,12 +992,13 @@
             document.getElementById('filtroFim').value = hoje;
             const lista = getRecebimentos();
             renderizarLista(lista);
+            // Se não houver chaves, exibe botão de gerenciar (via segredo)
+            // O botão "Gerenciar" só aparece após o segredo.
         }
 
         iniciar();
 
         // Expor funções globalmente
-        window.toggleTheme = toggleTheme;
         window.marcarComoPago = marcarComoPago;
         window.excluirRecebimento = excluirRecebimento;
         window.filtrarPorDia = filtrarPorDia;
@@ -1080,6 +1006,13 @@
         window.limparFiltros = limparFiltros;
         window.abrirModalRelatorios = abrirModalRelatorios;
         window.fecharModalRelatorios = fecharModalRelatorios;
+        window.abrirModalGerenciar = abrirModalGerenciar;
+        window.fecharModalGerenciar = fecharModalGerenciar;
+        window.adicionarChave = adicionarChave;
+        window.selecionarChave = selecionarChave;
+        window.editarChave = editarChave;
+        window.excluirChave = excluirChave;
+        window.salvarConfiguracoes = salvarConfiguracoes;
     </script>
 </body>
 </html>
