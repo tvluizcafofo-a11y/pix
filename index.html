@@ -206,8 +206,16 @@
             font-weight: bold;
             cursor: pointer;
             margin: 0;
+            transition: all 0.3s;
+            opacity: 0.4;
+            pointer-events: none;
+            font-size: 13px;
+        }
+        .resumo .btn-edit.active {
             opacity: 1;
             pointer-events: auto;
+            background: #e8f2ed;
+            box-shadow: 0 0 0 2px #0b6b3a;
         }
         .resumo .btn-edit:hover {
             background: #d4e6dc;
@@ -256,6 +264,12 @@
         }
         #btnGerenciar {
             display: none;
+            transition: all 0.3s;
+        }
+        #btnGerenciar.active {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
         }
 
         /* Estilos para lista de chaves */
@@ -316,6 +330,115 @@
             padding-top: 16px;
             margin-top: 16px;
         }
+        .botoes-topo {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .botoes-topo button {
+            width: auto;
+            padding: 10px 20px;
+            margin: 0;
+        }
+        .btn-pequeno {
+            padding: 6px 14px;
+            font-size: 13px;
+            margin: 0;
+        }
+        .filtros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 16px;
+        }
+        .filtros .grupo {
+            flex: 1 1 160px;
+        }
+        .filtros .grupo label {
+            margin: 0 0 4px;
+            font-size: 13px;
+        }
+        .filtros .grupo input {
+            padding: 8px 10px;
+        }
+        .filtros .grupo button {
+            margin: 0;
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+        .item-recebimento {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid #e8edf2;
+            background: #fafcff;
+            border-radius: 8px;
+            margin-bottom: 6px;
+        }
+        .item-recebimento .info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 14px;
+            color: #17202a;
+        }
+        .item-recebimento .info .data {
+            color: #68737d;
+            min-width: 100px;
+        }
+        .item-recebimento .info .valor {
+            font-weight: bold;
+            color: #0b6b3a;
+        }
+        .item-recebimento .info .descricao {
+            color: #17202a;
+        }
+        .item-recebimento .status {
+            font-size: 13px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .status-pendente {
+            background: #fef6e0;
+            color: #a67c00;
+        }
+        .status-pago {
+            background: #dff0d8;
+            color: #1e7e34;
+        }
+        .item-recebimento .acoes button {
+            margin: 0 0 0 8px;
+            padding: 4px 12px;
+            font-size: 13px;
+        }
+        .sem-dados {
+            text-align: center;
+            color: #68737d;
+            padding: 20px;
+        }
+        .total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 10px;
+            border-top: 2px solid #0b6b3a;
+            padding-top: 10px;
+            color: #17202a;
+        }
+        .dica-telefone {
+            font-size: 12px;
+            color: #68737d;
+            margin-top: 4px;
+            padding-left: 4px;
+        }
+        .dica-telefone i {
+            margin-right: 4px;
+        }
     </style>
 </head>
 <body>
@@ -337,7 +460,7 @@
             <div id="recebStatus" class="status"></div>
         </section>
 
-        <div class="botoes-topo" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <div class="botoes-topo">
             <button class="secondary" id="btnGerenciar" onclick="abrirModalGerenciar()" style="display:none;">⚙️ Gerenciar recebedor</button>
             <button class="secondary" onclick="abrirModalRelatorios()">📊 Relatórios</button>
         </div>
@@ -361,7 +484,6 @@
             <h2>⚙️ Gerenciar recebedor e chaves</h2>
             <p class="small">Os dados ficam salvos apenas neste aparelho.</p>
 
-            <!-- Dados do recebedor -->
             <label for="modalHeader">Título do cabeçalho (opcional)</label>
             <input id="modalHeader" maxlength="50" placeholder="Ex.: Minha Loja - PIX" value="PIX Recebimentos">
 
@@ -376,7 +498,6 @@
             <label for="modalDescricao">Descrição padrão (opcional)</label>
             <textarea id="modalDescricao" maxlength="72" placeholder="Ex.: Pagamento de produtos"></textarea>
 
-            <!-- Seção de chaves PIX -->
             <div class="secao-chaves">
                 <h3 style="margin:0 0 10px;">🔑 Chaves PIX</h3>
                 <div id="listaChaves" class="lista-chaves"></div>
@@ -399,14 +520,14 @@
     <div class="modal-overlay" id="modalRelatorios">
         <div class="modal" style="max-width: 820px;">
             <h2>📊 Relatórios de recebimentos</h2>
-            <div class="filtros" style="display:flex; flex-wrap:wrap; gap:12px; align-items:end; margin-bottom:16px;">
-                <div style="flex:1 1 160px;"><label style="margin:0 0 4px; font-size:13px;">Dia específico</label><input type="date" id="filtroData"></div>
-                <div><button class="secondary btn-pequeno" onclick="filtrarPorDia()">🔍 Filtrar dia</button></div>
-                <div style="flex:1 1 160px;"><label style="margin:0 0 4px; font-size:13px;">Período de</label><input type="date" id="filtroInicio"></div>
-                <div style="flex:1 1 160px;"><label style="margin:0 0 4px; font-size:13px;">até</label><input type="date" id="filtroFim"></div>
-                <div><button class="secondary btn-pequeno" onclick="filtrarPorPeriodo()">🔍 Filtrar período</button></div>
-                <div><button class="secondary btn-pequeno" onclick="limparFiltros()">🔄 Mostrar todos</button></div>
-                <div><button class="secondary btn-pequeno" onclick="fecharModalRelatorios()">✖ Fechar</button></div>
+            <div class="filtros">
+                <div class="grupo"><label>Dia específico</label><input type="date" id="filtroData"></div>
+                <div class="grupo"><button class="secondary btn-pequeno" onclick="filtrarPorDia()">🔍 Filtrar dia</button></div>
+                <div class="grupo"><label>Período de</label><input type="date" id="filtroInicio"></div>
+                <div class="grupo"><label>até</label><input type="date" id="filtroFim"></div>
+                <div class="grupo"><button class="secondary btn-pequeno" onclick="filtrarPorPeriodo()">🔍 Filtrar período</button></div>
+                <div class="grupo"><button class="secondary btn-pequeno" onclick="limparFiltros()">🔄 Mostrar todos</button></div>
+                <div class="grupo"><button class="secondary btn-pequeno" onclick="fecharModalRelatorios()">✖ Fechar</button></div>
             </div>
             <div id="listaRecebimentos" class="lista-recebimentos"></div>
         </div>
@@ -423,24 +544,56 @@
             e.stopPropagation();
             secretClicks++;
             if (!secretTimer) {
-                secretTimer = setTimeout(() => { secretClicks = 0; secretTimer = null; }, 1000);
+                secretTimer = setTimeout(() => { 
+                    secretClicks = 0; 
+                    secretTimer = null; 
+                }, 1000);
             }
             if (secretClicks >= 7) {
                 secretClicks = 0;
                 clearTimeout(secretTimer);
                 secretTimer = null;
-                // Exibe o botão "Gerenciar" e abre o modal
-                const btn = document.getElementById('btnGerenciar');
-                btn.style.display = 'block';
-                btn.style.opacity = '1';
-                btn.style.pointerEvents = 'auto';
-                abrirModalGerenciar();
+                // Habilita edição
+                habilitarEdicao();
                 const area = document.getElementById('secretArea');
                 area.style.background = 'rgba(255,255,255,0.2)';
                 setTimeout(() => { area.style.background = 'transparent'; }, 300);
                 console.log('🔓 Modo de edição ativado!');
             }
         });
+
+        // ---------- CONTROLE DE EDIÇÃO ----------
+        function habilitarEdicao() {
+            // Botão Gerenciar (no topo)
+            const btnGerenciar = document.getElementById('btnGerenciar');
+            btnGerenciar.classList.add('active');
+            btnGerenciar.style.display = 'block';
+            btnGerenciar.style.opacity = '1';
+            btnGerenciar.style.pointerEvents = 'auto';
+            // Botão Editar (no resumo)
+            const editBtn = document.querySelector('.resumo .btn-edit');
+            if (editBtn) {
+                editBtn.classList.add('active');
+                editBtn.style.opacity = '1';
+                editBtn.style.pointerEvents = 'auto';
+            }
+        }
+
+        function desabilitarEdicao() {
+            // Botão Gerenciar
+            const btnGerenciar = document.getElementById('btnGerenciar');
+            btnGerenciar.classList.remove('active');
+            btnGerenciar.style.display = 'none';
+            btnGerenciar.style.opacity = '0';
+            btnGerenciar.style.pointerEvents = 'none';
+            // Botão Editar
+            const editBtn = document.querySelector('.resumo .btn-edit');
+            if (editBtn) {
+                editBtn.classList.remove('active');
+                editBtn.style.opacity = '0.4';
+                editBtn.style.pointerEvents = 'none';
+            }
+        }
 
         // ---------- UTILITÁRIOS ----------
         function limparTexto(s, max) {
@@ -544,7 +697,6 @@
                     if (config.chaves && config.chaves.length > 0) return config;
                 }
             } catch(e) {}
-            // Valor padrão
             return {
                 nome: '',
                 cidade: '',
@@ -565,7 +717,6 @@
             if (config.chaveAtiva !== null && config.chaves.some(c => c.id === config.chaveAtiva)) {
                 return config.chaves.find(c => c.id === config.chaveAtiva).chave;
             }
-            // Se não tiver ativa, pega a primeira
             config.chaveAtiva = config.chaves[0].id;
             saveConfig(config);
             return config.chaves[0].chave;
@@ -600,30 +751,43 @@
                     </div>
                 `;
             }
+            // Aplica o estado de edição (desabilitado por padrão) - mas se o segredo já estiver ativo, mantém habilitado
+            const gerenciarBtn = document.getElementById('btnGerenciar');
+            if (!gerenciarBtn.classList.contains('active')) {
+                desabilitarEdicao();
+            } else {
+                // Se já estiver ativo, reaplica a habilitação
+                habilitarEdicao();
+            }
         }
 
         // ---------- MODAL GERENCIAR ----------
         function abrirModalGerenciar() {
+            // Se o botão Gerenciar estiver desabilitado, não abre (a menos que o segredo tenha sido ativado)
+            const btn = document.getElementById('btnGerenciar');
+            if (!btn.classList.contains('active') && btn.style.display === 'none') {
+                // Tenta ativar o segredo? Não, apenas avisa que precisa do segredo.
+                alert('Para acessar esta função, clique 7 vezes no canto superior direito da tela.');
+                return;
+            }
             const config = getConfig();
-            // Preenche campos
             $('modalHeader').value = config.header || 'PIX Recebimentos';
             $('modalNome').value = config.nome || '';
             $('modalCidade').value = config.cidade || '';
             $('modalTxid').value = config.txid || '***';
             $('modalDescricao').value = config.descricao || '';
-            // Exibe lista de chaves
             renderizarListaChaves(config);
             $('modalGerenciar').classList.add('active');
             $('geralStatus').textContent = '';
             $('statusChaves').textContent = '';
-            // Limpa campo de nova chave
             $('novaChaveInput').value = '';
         }
 
         function fecharModalGerenciar() {
             $('modalGerenciar').classList.remove('active');
-            // Reativa o segredo para esconder o botão se não for usado
-            // (mas mantemos disponível)
+            // Desabilita a edição ao fechar o modal (a menos que o segredo ainda esteja ativo)
+            // Mas o segredo é reaplicado ao clicar novamente.
+            desabilitarEdicao();
         }
 
         function renderizarListaChaves(config) {
@@ -755,7 +919,6 @@
                 $('geralStatus').style.color = '#a42020';
                 return;
             }
-            // Garante que há uma chave ativa
             if (config.chaveAtiva === null || !config.chaves.some(c => c.id === config.chaveAtiva)) {
                 config.chaveAtiva = config.chaves[0].id;
             }
@@ -765,8 +928,9 @@
             $('geralStatus').textContent = '✓ Configurações salvas!';
             $('geralStatus').style.color = '#0b6b3a';
             setTimeout(() => { $('geralStatus').textContent = ''; }, 3000);
-            // Fecha o modal após salvar?
-            // Deixamos aberto para o usuário continuar editando, mas pode fechar se quiser.
+            // Fecha o modal após salvar? Pode fechar, mas mantém aberto para editar mais.
+            // Se quiser fechar automaticamente, descomente:
+            // fecharModalGerenciar();
         }
 
         function atualizarCabecalho(titulo) {
@@ -825,7 +989,7 @@
         function renderizarLista(lista) {
             const container = document.getElementById('listaRecebimentos');
             if (!lista || lista.length === 0) {
-                container.innerHTML = `<div class="sem-dados" style="text-align:center;color:#68737d;padding:20px;">Nenhum recebimento encontrado.</div>`;
+                container.innerHTML = `<div class="sem-dados">Nenhum recebimento encontrado.</div>`;
                 return;
             }
             let html = '';
@@ -837,22 +1001,22 @@
                 if (item.status === 'pago') { pagoCount++; total += item.valor; }
                 const chaveExib = item.chave ? mascararChave(item.chave) : '—';
                 html += `
-                    <div class="item-recebimento" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #e8edf2;background:#fafcff;border-radius:8px;margin-bottom:6px;">
-                        <div class="info" style="display:flex;flex-wrap:wrap;gap:10px;font-size:14px;color:#17202a;">
-                            <span style="color:#68737d;min-width:100px;">${item.data} ${item.hora}</span>
-                            <span style="font-weight:bold;color:#0b6b3a;">R$ ${valorStr}</span>
-                            <span>${item.descricao || 'Sem descrição'}</span>
+                    <div class="item-recebimento">
+                        <div class="info">
+                            <span class="data">${item.data} ${item.hora}</span>
+                            <span class="valor">R$ ${valorStr}</span>
+                            <span class="descricao">${item.descricao || 'Sem descrição'}</span>
                             <span style="font-size:12px;color:#68737d;">Chave: ${chaveExib}</span>
-                            <span class="status ${statusClass}" style="font-size:13px;font-weight:bold;padding:4px 12px;border-radius:20px;background:${item.status === 'pago' ? '#dff0d8' : '#fef6e0'};color:${item.status === 'pago' ? '#1e7e34' : '#a67c00'};">${statusLabel}</span>
+                            <span class="status ${statusClass}">${statusLabel}</span>
                         </div>
-                        <div class="acoes" style="display:flex;gap:4px;">
-                            ${item.status === 'pendente' ? `<button class="secondary btn-pequeno" onclick="marcarComoPago(${item.id})" style="padding:4px 12px;font-size:13px;margin:0;">✅ Confirmar</button>` : ''}
-                            <button class="danger btn-pequeno" onclick="excluirRecebimento(${item.id})" style="padding:4px 12px;font-size:13px;margin:0;">🗑️</button>
+                        <div class="acoes">
+                            ${item.status === 'pendente' ? `<button class="secondary btn-pequeno" onclick="marcarComoPago(${item.id})">✅ Confirmar</button>` : ''}
+                            <button class="danger btn-pequeno" onclick="excluirRecebimento(${item.id})">🗑️</button>
                         </div>
                     </div>
                 `;
             });
-            const totalHTML = `<div class="total" style="text-align:right;font-weight:bold;font-size:16px;margin-top:10px;border-top:2px solid #0b6b3a;padding-top:10px;color:#17202a;">Total recebido (pagos): R$ ${total.toFixed(2).replace('.', ',')} &nbsp;|&nbsp; ${pagoCount} pagos de ${lista.length}</div>`;
+            const totalHTML = `<div class="total">Total recebido (pagos): R$ ${total.toFixed(2).replace('.', ',')} &nbsp;|&nbsp; ${pagoCount} pagos de ${lista.length}</div>`;
             container.innerHTML = html + totalHTML;
         }
 
@@ -992,8 +1156,8 @@
             document.getElementById('filtroFim').value = hoje;
             const lista = getRecebimentos();
             renderizarLista(lista);
-            // Se não houver chaves, exibe botão de gerenciar (via segredo)
-            // O botão "Gerenciar" só aparece após o segredo.
+            // Garantir que a edição comece desabilitada
+            desabilitarEdicao();
         }
 
         iniciar();
@@ -1013,6 +1177,8 @@
         window.editarChave = editarChave;
         window.excluirChave = excluirChave;
         window.salvarConfiguracoes = salvarConfiguracoes;
+        window.habilitarEdicao = habilitarEdicao;
+        window.desabilitarEdicao = desabilitarEdicao;
     </script>
 </body>
 </html>
