@@ -4,139 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0b6b3a">
+    <meta name="color-scheme" content="light only">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>PIX Recebimentos</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        /* ===== ESTILOS (tema claro fixo) ===== */
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f3f5f7;
-            color: #17202a;
-        }
-        header {
-            background: #0b6b3a;
-            color: #fff;
-            padding: 16px 16px 14px;
-            text-align: center;
+        /* ===== ESTILOS ===== */
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Arial, sans-serif; background: #f3f5f7; color: #17202a; }
+        header { background: #0b6b3a; color: #fff; padding: 16px 16px 14px; text-align: center; position: relative; }
+        #secretArea { position: absolute; top: 0; right: 0; width: 80px; height: 60px; z-index: 10; cursor: pointer; background: transparent; }
+        header h1 { margin: 0 0 4px; font-size: 25px; color: #fff; }
+        header h1 .icone { margin-right: 10px; }
+        header p { margin: 0; opacity: .9; font-size: 14px; color: #fff; }
+        main { max-width: 820px; margin: 18px auto; padding: 0 12px; }
+        .card { background: #fff; border-radius: 16px; padding: 18px; margin-bottom: 16px; box-shadow: 0 3px 14px #00000012; color: #17202a; }
+        h2 { margin: 0 0 15px; font-size: 19px; color: #17202a; }
+        label { display: block; font-weight: bold; margin: 12px 0 6px; color: #17202a; }
+        input, select, button, textarea { width: 100%; font: inherit; border-radius: 10px; background: #fff; color: #17202a; border: 1px solid #cbd2d9; }
+        input:focus, textarea:focus { outline: 2px solid #0b6b3a; border-color: transparent; }
+        input#valor { font-size: 24px; padding: 16px 14px; text-align: center; font-weight: bold; letter-spacing: 1px; border-width: 2px; }
+        textarea { resize: vertical; min-height: 72px; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        button { border: 0; padding: 13px 14px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .primary { background: #0b6b3a; color: #fff; }
+        .primary:hover { background: #095a31; }
+        .secondary { background: #e8f2ed; color: #0b6b3a; }
+        .secondary:hover { background: #d4e6dc; }
+        .danger { background: #fdeaea; color: #a42020; }
+        .danger:hover { background: #fccccc; }
+        .result { text-align: center; display: none; background: #fff; }
+        /* QR Code container com posicionamento relativo para o overlay */
+        #qrcode-wrapper {
             position: relative;
-        }
-        #secretArea {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 80px;
-            height: 60px;
-            z-index: 10;
-            cursor: pointer;
-            background: transparent;
-        }
-        header h1 {
-            margin: 0 0 4px;
-            font-size: 25px;
-        }
-        header h1 i {
-            margin-right: 10px;
-        }
-        header p {
-            margin: 0;
-            opacity: .9;
-            font-size: 14px;
-        }
-        main {
-            max-width: 820px;
-            margin: 18px auto;
-            padding: 0 12px;
-        }
-        .card {
-            background: #fff;
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 16px;
-            box-shadow: 0 3px 14px #00000012;
-        }
-        h2 {
-            margin: 0 0 15px;
-            font-size: 19px;
-            color: #17202a;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin: 12px 0 6px;
-            color: #17202a;
-        }
-        input, select, button, textarea {
-            width: 100%;
-            font: inherit;
-            border-radius: 10px;
-        }
-        input, textarea {
-            padding: 12px;
-            border: 1px solid #cbd2d9;
-            background: #fff;
-            color: #17202a;
-        }
-        input:focus, textarea:focus {
-            outline: 2px solid #0b6b3a;
-            border-color: transparent;
-        }
-        input#valor {
-            font-size: 24px;
-            padding: 16px 14px;
-            text-align: center;
-            font-weight: bold;
-            letter-spacing: 1px;
-            border-width: 2px;
-        }
-        textarea {
-            resize: vertical;
-            min-height: 72px;
-        }
-        .row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        button {
-            border: 0;
-            padding: 13px 14px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .primary {
-            background: #0b6b3a;
-            color: #fff;
-        }
-        .primary:hover {
-            background: #095a31;
-        }
-        .secondary {
-            background: #e8f2ed;
-            color: #0b6b3a;
-        }
-        .secondary:hover {
-            background: #d4e6dc;
-        }
-        .danger {
-            background: #fdeaea;
-            color: #a42020;
-        }
-        .danger:hover {
-            background: #fccccc;
-        }
-        .result {
-            text-align: center;
-            display: none;
-        }
-        #qrcode {
             display: inline-block;
             padding: 16px;
             background: #fff;
@@ -145,306 +47,118 @@
             box-shadow: 0 4px 20px rgba(11,107,58,0.2);
             margin: 8px auto;
         }
+        #qrcode {
+            display: block;
+        }
         #qrcode img, #qrcode canvas {
             max-width: 100%;
             height: auto;
             display: block;
         }
-        .valor {
-            font-size: 31px;
-            font-weight: bold;
-            color: #0b6b3a;
-            margin: 10px;
-        }
-        .copybox {
-            word-break: break-all;
-            background: #f4f6f8;
-            padding: 12px;
+        /* Ícone centralizado sobre o QR Code */
+        #qrcode-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
             border-radius: 10px;
-            text-align: left;
-            font-size: 13px;
-            color: #17202a;
-        }
-        .status {
-            margin-top: 10px;
-            text-align: center;
-            font-weight: bold;
-        }
-        .small {
-            font-size: 12px;
-            color: #68737d;
-        }
-        .resumo {
-            background: #f7faf8;
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .resumo .info {
-            font-size: 14px;
-            color: #17202a;
-            flex: 1;
-        }
-        .resumo .info strong {
-            display: inline-block;
-            min-width: 60px;
-        }
-        .resumo .info .chave-mascarada {
-            cursor: help;
-            border-bottom: 1px dashed #68737d;
-        }
-        .resumo .btn-edit {
-            background: transparent;
-            border: 1px solid #0b6b3a;
-            color: #0b6b3a;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 0;
-            transition: all 0.3s;
-            opacity: 0.4;
+            background: #fff;
+            padding: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
             pointer-events: none;
-            font-size: 13px;
+            z-index: 5;
         }
-        .resumo .btn-edit.active {
-            opacity: 1;
-            pointer-events: auto;
-            background: #e8f2ed;
-            box-shadow: 0 0 0 2px #0b6b3a;
-        }
-        .resumo .btn-edit:hover {
-            background: #d4e6dc;
-        }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
+        #qrcode-icon img {
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal {
-            background: #fff;
-            max-width: 700px;
-            width: 100%;
-            border-radius: 20px;
-            padding: 24px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        }
-        .modal h2 {
-            margin-top: 0;
-            color: #17202a;
-        }
-        .modal .btn-group {
-            display: flex;
-            gap: 12px;
-        }
-        .modal .btn-group button {
-            flex: 1;
-        }
-        @media (max-width: 560px) {
-            .row {
-                grid-template-columns: 1fr;
-            }
-        }
-        #btnGerenciar {
-            display: none;
-            transition: all 0.3s;
-        }
-        #btnGerenciar.active {
+            object-fit: contain;
+            border-radius: 6px;
             display: block;
-            opacity: 1;
-            pointer-events: auto;
         }
+        .valor { font-size: 31px; font-weight: bold; color: #0b6b3a; margin: 10px; }
+        .copybox { word-break: break-all; background: #f4f6f8; padding: 12px; border-radius: 10px; text-align: left; font-size: 13px; color: #17202a; }
+        .status { margin-top: 10px; text-align: center; font-weight: bold; }
+        .small { font-size: 12px; color: #68737d; }
+        .resumo { background: #f7faf8; padding: 12px 16px; border-radius: 10px; margin-bottom: 12px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; color: #17202a; }
+        .resumo .info { font-size: 14px; color: #17202a; flex: 1; }
+        .resumo .info strong { display: inline-block; min-width: 60px; }
+        .resumo .info .chave-mascarada { cursor: help; border-bottom: 1px dashed #68737d; }
+        .resumo .btn-edit { background: transparent; border: 1px solid #0b6b3a; color: #0b6b3a; padding: 6px 14px; border-radius: 20px; font-weight: bold; cursor: pointer; margin: 0; font-size: 13px; opacity: 1; pointer-events: auto; }
+        .resumo .btn-edit:hover { background: #d4e6dc; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: #fff; max-width: 700px; width: 100%; border-radius: 20px; padding: 24px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 40px rgba(0,0,0,0.3); color: #17202a; }
+        .modal h2 { margin-top: 0; color: #17202a; }
+        .modal .btn-group { display: flex; gap: 12px; }
+        .modal .btn-group button { flex: 1; }
+        @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
 
-        /* Estilos para lista de chaves */
-        .lista-chaves {
-            margin: 12px 0;
-        }
-        .item-chave {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 12px;
-            border-bottom: 1px solid #e8edf2;
-            background: #fafcff;
-            border-radius: 8px;
-            margin-bottom: 6px;
-        }
-        .item-chave .chave-texto {
-            font-size: 14px;
-            color: #17202a;
-            flex: 1;
-            margin: 0 10px;
-            word-break: break-all;
-        }
-        .item-chave .acoes-chave button {
-            background: transparent;
-            border: none;
-            padding: 4px 8px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 0 2px;
-        }
+        .lista-chaves { margin: 12px 0; }
+        .item-chave { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid #e8edf2; background: #fafcff; border-radius: 8px; margin-bottom: 6px; color: #17202a; }
+        .item-chave .chave-texto { font-size: 14px; color: #17202a; flex: 1; margin: 0 10px; word-break: break-all; }
+        .item-chave .acoes-chave button { background: transparent; border: none; padding: 4px 8px; cursor: pointer; font-size: 16px; margin: 0 2px; }
         .item-chave .acoes-chave .editar { color: #0b6b3a; }
         .item-chave .acoes-chave .excluir { color: #a42020; }
-        .item-chave .selecionar {
-            font-size: 20px;
-            cursor: pointer;
-            color: #cbd2d9;
-        }
-        .item-chave .selecionar.ativa {
-            color: #0b6b3a;
-        }
-        .chave-input-group {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .chave-input-group input {
-            flex: 1;
-            padding: 10px 12px;
-        }
-        .chave-input-group button {
-            margin: 0;
-            padding: 10px 18px;
-            width: auto;
-        }
-        .secao-chaves {
-            border-top: 2px solid #e8edf2;
-            padding-top: 16px;
-            margin-top: 16px;
-        }
-        .botoes-topo {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .botoes-topo button {
-            width: auto;
-            padding: 10px 20px;
-            margin: 0;
-        }
-        .btn-pequeno {
-            padding: 6px 14px;
-            font-size: 13px;
-            margin: 0;
-        }
-        .filtros {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            align-items: end;
-            margin-bottom: 16px;
-        }
-        .filtros .grupo {
-            flex: 1 1 160px;
-        }
-        .filtros .grupo label {
-            margin: 0 0 4px;
-            font-size: 13px;
-        }
-        .filtros .grupo input {
-            padding: 8px 10px;
-        }
-        .filtros .grupo button {
-            margin: 0;
-            padding: 8px 12px;
-            font-size: 13px;
-        }
-        .item-recebimento {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-            border-bottom: 1px solid #e8edf2;
-            background: #fafcff;
-            border-radius: 8px;
-            margin-bottom: 6px;
-        }
-        .item-recebimento .info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            font-size: 14px;
-            color: #17202a;
-        }
-        .item-recebimento .info .data {
-            color: #68737d;
-            min-width: 100px;
-        }
-        .item-recebimento .info .valor {
-            font-weight: bold;
-            color: #0b6b3a;
-        }
-        .item-recebimento .info .descricao {
-            color: #17202a;
-        }
-        .item-recebimento .status {
-            font-size: 13px;
-            font-weight: bold;
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
-        .status-pendente {
-            background: #fef6e0;
-            color: #a67c00;
-        }
-        .status-pago {
-            background: #dff0d8;
-            color: #1e7e34;
-        }
-        .item-recebimento .acoes button {
-            margin: 0 0 0 8px;
-            padding: 4px 12px;
-            font-size: 13px;
-        }
-        .sem-dados {
-            text-align: center;
-            color: #68737d;
-            padding: 20px;
-        }
-        .total {
-            text-align: right;
-            font-weight: bold;
-            font-size: 16px;
-            margin-top: 10px;
-            border-top: 2px solid #0b6b3a;
-            padding-top: 10px;
-            color: #17202a;
-        }
-        .dica-telefone {
-            font-size: 12px;
-            color: #68737d;
-            margin-top: 4px;
-            padding-left: 4px;
-        }
-        .dica-telefone i {
-            margin-right: 4px;
+        .item-chave .selecionar { font-size: 20px; cursor: pointer; color: #cbd2d9; }
+        .item-chave .selecionar.ativa { color: #0b6b3a; }
+        .chave-input-group { display: flex; gap: 8px; margin-top: 8px; }
+        .chave-input-group input { flex: 1; padding: 10px 12px; }
+        .chave-input-group button { margin: 0; padding: 10px 18px; width: auto; }
+        .secao-chaves { border-top: 2px solid #e8edf2; padding-top: 16px; margin-top: 16px; }
+        .botoes-topo { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+        .botoes-topo button { width: auto; padding: 10px 20px; margin: 0; }
+        .btn-pequeno { padding: 6px 14px; font-size: 13px; margin: 0; }
+        .filtros { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin-bottom: 16px; }
+        .filtros .grupo { flex: 1 1 160px; }
+        .filtros .grupo label { margin: 0 0 4px; font-size: 13px; color: #68737d; }
+        .filtros .grupo input { padding: 8px 10px; }
+        .filtros .grupo button { margin: 0; padding: 8px 12px; font-size: 13px; }
+        .item-recebimento { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 10px 12px; border-bottom: 1px solid #e8edf2; background: #fafcff; border-radius: 8px; margin-bottom: 6px; color: #17202a; }
+        .item-recebimento .info { display: flex; flex-wrap: wrap; gap: 10px; font-size: 14px; color: #17202a; }
+        .item-recebimento .info .data { color: #68737d; min-width: 100px; }
+        .item-recebimento .info .valor { font-weight: bold; color: #0b6b3a; }
+        .item-recebimento .info .descricao { color: #17202a; }
+        .item-recebimento .status { font-size: 13px; font-weight: bold; padding: 4px 12px; border-radius: 20px; }
+        .status-pendente { background: #fef6e0; color: #a67c00; }
+        .status-pago { background: #dff0d8; color: #1e7e34; }
+        .item-recebimento .acoes button { margin: 0 0 0 8px; padding: 4px 12px; font-size: 13px; }
+        .sem-dados { text-align: center; color: #68737d; padding: 20px; }
+        .total { text-align: right; font-weight: bold; font-size: 16px; margin-top: 10px; border-top: 2px solid #0b6b3a; padding-top: 10px; color: #17202a; }
+        .dica-telefone { font-size: 12px; color: #68737d; margin-top: 4px; padding-left: 4px; }
+        .dica-telefone i { margin-right: 4px; }
+
+        .senha-modal .modal { max-width: 400px; }
+        .senha-modal .modal p { color: #68737d; margin: 4px 0 12px; }
+        .senha-modal .modal .erro-senha { color: #a42020; font-size: 14px; margin-top: 6px; display: none; }
+        .senha-modal .modal .erro-senha.visible { display: block; }
+        .senha-modal .modal input { margin-bottom: 10px; }
+        .senha-modal .modal .btn-group { margin-top: 6px; }
+
+        .tutorial .modal { max-width: 500px; }
+        .tutorial .modal ul { padding-left: 20px; }
+        .tutorial .modal li { margin: 8px 0; }
+        .tutorial .modal .icone { font-size: 28px; text-align: center; margin-bottom: 6px; }
+
+        @media (prefers-color-scheme: dark) {
+            body, .card, .modal, header, .resumo, .copybox, .item-chave, .item-recebimento, #qrcode-wrapper {
+                background: #fff !important;
+                color: #17202a !important;
+                border-color: #cbd2d9 !important;
+            }
+            header, header h1, header p { background: #0b6b3a !important; color: #fff !important; }
+            input, textarea { background: #fff !important; color: #17202a !important; border-color: #cbd2d9 !important; }
         }
     </style>
 </head>
 <body>
     <header>
         <div id="secretArea"></div>
-        <h1 id="headerTitulo"><i class="fas fa-cash-register"></i> PIX Recebimentos</h1>
+        <h1 id="headerTitulo">
+            <span class="icone">💳</span>
+            <span id="tituloCabecalho">PIX Recebimentos</span>
+        </h1>
         <p id="headerSubtitulo">Gerencie suas cobranças e recebimentos</p>
     </header>
 
@@ -461,14 +175,19 @@
         </section>
 
         <div class="botoes-topo">
-            <button class="secondary" id="btnGerenciar" onclick="abrirModalGerenciar()" style="display:none;">⚙️ Gerenciar recebedor</button>
+            <button class="secondary" onclick="abrirTutorial()">❓ Ajuda</button>
             <button class="secondary" onclick="abrirModalRelatorios()">📊 Relatórios</button>
         </div>
 
         <section id="resultado" class="card result">
             <h2>📲 Pagamento PIX</h2>
             <div class="valor" id="valorExibido">R$ 0,00</div>
-            <div id="qrcode"></div>
+            <div id="qrcode-wrapper">
+                <div id="qrcode"></div>
+                <div id="qrcode-icon">
+                    <img src="icon-192.png" alt="Logo" id="qrcodeIconImg">
+                </div>
+            </div>
             <p><b>Aponte a câmera do celular para o QR Code</b></p>
             <button class="secondary" onclick="copiarPix()">📋 Copiar PIX Copia e Cola</button>
             <button class="secondary" onclick="compartilharPix()">📤 Compartilhar código PIX</button>
@@ -478,26 +197,21 @@
         </section>
     </main>
 
-    <!-- MODAL GERENCIAR (RECEBEDOR + CHAVES) -->
+    <!-- MODAL GERENCIAR -->
     <div class="modal-overlay" id="modalGerenciar">
         <div class="modal">
             <h2>⚙️ Gerenciar recebedor e chaves</h2>
             <p class="small">Os dados ficam salvos apenas neste aparelho.</p>
-
             <label for="modalHeader">Título do cabeçalho (opcional)</label>
             <input id="modalHeader" maxlength="50" placeholder="Ex.: Minha Loja - PIX" value="PIX Recebimentos">
-
             <label for="modalNome">Nome do recebedor *</label>
             <input id="modalNome" maxlength="25" placeholder="Ex.: JOAO DA SILVA">
-
             <div class="row">
                 <div><label for="modalCidade">Cidade *</label><input id="modalCidade" maxlength="15" placeholder="Ex.: SAO PAULO"></div>
                 <div><label for="modalTxid">Identificação (TXID)</label><input id="modalTxid" maxlength="25" value="***"></div>
             </div>
-
             <label for="modalDescricao">Descrição padrão (opcional)</label>
             <textarea id="modalDescricao" maxlength="72" placeholder="Ex.: Pagamento de produtos"></textarea>
-
             <div class="secao-chaves">
                 <h3 style="margin:0 0 10px;">🔑 Chaves PIX</h3>
                 <div id="listaChaves" class="lista-chaves"></div>
@@ -507,12 +221,79 @@
                 </div>
                 <div id="statusChaves" class="status" style="margin-top:6px;"></div>
             </div>
-
-            <div class="btn-group" style="margin-top:18px;">
+            <div class="btn-group" style="margin-top:12px;">
+                <button class="secondary" onclick="abrirAlterarSenha()">🔑 Alterar senha</button>
                 <button class="secondary" onclick="fecharModalGerenciar()">Fechar</button>
                 <button class="primary" onclick="salvarConfiguracoes()">💾 Salvar tudo</button>
             </div>
             <div id="geralStatus" class="status"></div>
+        </div>
+    </div>
+
+    <!-- MODAL ALTERAR SENHA -->
+    <div class="modal-overlay senha-modal" id="modalAlterarSenha">
+        <div class="modal">
+            <h2>🔑 Alterar senha</h2>
+            <p>Digite a senha atual e a nova senha.</p>
+            <label for="senhaAtual">Senha atual</label>
+            <input type="password" id="senhaAtual" placeholder="Digite sua senha atual" maxlength="20">
+            <label for="novaSenhaAlterar">Nova senha</label>
+            <input type="password" id="novaSenhaAlterar" placeholder="Digite a nova senha" maxlength="20">
+            <label for="confirmaSenhaAlterar">Confirmar nova senha</label>
+            <input type="password" id="confirmaSenhaAlterar" placeholder="Digite novamente" maxlength="20">
+            <div class="erro-senha" id="erroAlterar">Senha atual incorreta ou nova senha não coincide.</div>
+            <div class="btn-group">
+                <button class="secondary" onclick="fecharModalAlterarSenha()">Cancelar</button>
+                <button class="primary" onclick="alterarSenha()">Salvar nova senha</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CRIAR SENHA -->
+    <div class="modal-overlay senha-modal" id="modalCriarSenha">
+        <div class="modal">
+            <h2>🔐 Criar senha de acesso</h2>
+            <p>Defina uma senha para acessar o gerenciamento de chaves PIX.</p>
+            <label for="novaSenha">Nova senha</label>
+            <input type="password" id="novaSenha" placeholder="Digite sua senha" maxlength="20">
+            <label for="confirmaSenha">Confirmar senha</label>
+            <input type="password" id="confirmaSenha" placeholder="Digite novamente" maxlength="20">
+            <div class="erro-senha" id="erroCriar">As senhas não coincidem ou estão vazias.</div>
+            <div class="btn-group">
+                <button class="secondary" onclick="fecharModalCriarSenha()">Cancelar</button>
+                <button class="primary" onclick="criarSenha()">Salvar senha</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ENTRAR SENHA -->
+    <div class="modal-overlay senha-modal" id="modalEntrarSenha">
+        <div class="modal">
+            <h2>🔐 Acesso restrito</h2>
+            <p>Digite sua senha para gerenciar as chaves PIX.</p>
+            <label for="senhaAcesso">Senha</label>
+            <input type="password" id="senhaAcesso" placeholder="Digite sua senha" maxlength="20">
+            <div class="erro-senha" id="erroEntrar">Senha incorreta. Tente novamente.</div>
+            <div class="btn-group">
+                <button class="secondary" onclick="fecharModalEntrarSenha()">Cancelar</button>
+                <button class="primary" onclick="entrarSenha()">Entrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TUTORIAL -->
+    <div class="modal-overlay tutorial" id="modalTutorial">
+        <div class="modal">
+            <div class="icone">📘</div>
+            <h2>Como usar o PIX Recebimentos</h2>
+            <ul>
+                <li><strong>1. Cadastre um recebedor</strong><br>Clique em <strong>"✎ Editar"</strong> no resumo e preencha nome, cidade e pelo menos uma chave PIX. Crie uma senha para proteger a edição.</li>
+                <li><strong>2. Gerar cobrança</strong><br>Informe o valor, opcionalmente uma descrição, e clique em <strong>"⚡ Gerar QR Code PIX"</strong>.</li>
+                <li><strong>3. Compartilhar</strong><br>Copie o código ou compartilhe via WhatsApp/e-mail. O destinatário cola no app do banco.</li>
+                <li><strong>4. Confirmar pagamento</strong><br>Vá em <strong>"📊 Relatórios"</strong>, localize a cobrança pendente e clique em <strong>"✅ Confirmar"</strong>.</li>
+                <li><strong>5. Gerenciar chaves</strong><br>No modo de edição (ícone <strong>✎</strong>), você pode adicionar, editar ou excluir chaves PIX.</li>
+            </ul>
+            <button class="primary" onclick="fecharTutorial()" style="margin-top:12px;">Entendi!</button>
         </div>
     </div>
 
@@ -537,74 +318,116 @@
     <script>
         // ===== JAVASCRIPT COMPLETO =====
         const $ = id => document.getElementById(id);
-        let secretClicks = 0, secretTimer = null;
 
-        // ---------- SEGREDO: 7 cliques no canto superior direito ----------
+        // SEGREDO PARA RECUPERAR SENHA
+        let secretClicks = 0, secretTimer = null;
         document.getElementById('secretArea').addEventListener('click', function(e) {
             e.stopPropagation();
             secretClicks++;
             if (!secretTimer) {
-                secretTimer = setTimeout(() => { 
-                    secretClicks = 0; 
-                    secretTimer = null; 
-                }, 1000);
+                secretTimer = setTimeout(() => { secretClicks = 0; secretTimer = null; }, 1000);
             }
             if (secretClicks >= 7) {
                 secretClicks = 0;
                 clearTimeout(secretTimer);
                 secretTimer = null;
-                // Habilita edição
-                habilitarEdicao();
+                const senha = localStorage.getItem('pixSenha');
+                alert(senha ? '🔐 Sua senha é: ' + senha : 'ℹ️ Nenhuma senha cadastrada ainda.');
                 const area = document.getElementById('secretArea');
                 area.style.background = 'rgba(255,255,255,0.2)';
                 setTimeout(() => { area.style.background = 'transparent'; }, 300);
-                console.log('🔓 Modo de edição ativado!');
             }
         });
 
-        // ---------- CONTROLE DE EDIÇÃO ----------
-        function habilitarEdicao() {
-            // Botão Gerenciar (no topo)
-            const btnGerenciar = document.getElementById('btnGerenciar');
-            btnGerenciar.classList.add('active');
-            btnGerenciar.style.display = 'block';
-            btnGerenciar.style.opacity = '1';
-            btnGerenciar.style.pointerEvents = 'auto';
-            // Botão Editar (no resumo)
-            const editBtn = document.querySelector('.resumo .btn-edit');
-            if (editBtn) {
-                editBtn.classList.add('active');
-                editBtn.style.opacity = '1';
-                editBtn.style.pointerEvents = 'auto';
+        // GERENCIAMENTO DE SENHA
+        function abrirGerenciar() {
+            const senhaSalva = localStorage.getItem('pixSenha');
+            if (!senhaSalva) {
+                $('modalCriarSenha').classList.add('active');
+                $('novaSenha').value = '';
+                $('confirmaSenha').value = '';
+                document.getElementById('erroCriar').classList.remove('visible');
+            } else {
+                $('modalEntrarSenha').classList.add('active');
+                $('senhaAcesso').value = '';
+                document.getElementById('erroEntrar').classList.remove('visible');
             }
         }
 
-        function desabilitarEdicao() {
-            // Botão Gerenciar
-            const btnGerenciar = document.getElementById('btnGerenciar');
-            btnGerenciar.classList.remove('active');
-            btnGerenciar.style.display = 'none';
-            btnGerenciar.style.opacity = '0';
-            btnGerenciar.style.pointerEvents = 'none';
-            // Botão Editar
-            const editBtn = document.querySelector('.resumo .btn-edit');
-            if (editBtn) {
-                editBtn.classList.remove('active');
-                editBtn.style.opacity = '0.4';
-                editBtn.style.pointerEvents = 'none';
+        function criarSenha() {
+            const senha = $('novaSenha').value.trim();
+            const confirma = $('confirmaSenha').value.trim();
+            if (!senha || senha !== confirma) {
+                document.getElementById('erroCriar').classList.add('visible');
+                return;
+            }
+            localStorage.setItem('pixSenha', senha);
+            fecharModalCriarSenha();
+            abrirModalGerenciar();
+        }
+
+        function entrarSenha() {
+            const senha = $('senhaAcesso').value.trim();
+            const senhaSalva = localStorage.getItem('pixSenha');
+            if (senha === senhaSalva) {
+                fecharModalEntrarSenha();
+                abrirModalGerenciar();
+            } else {
+                document.getElementById('erroEntrar').classList.add('visible');
+                $('senhaAcesso').value = '';
             }
         }
 
-        // ---------- UTILITÁRIOS ----------
+        function fecharModalCriarSenha() { $('modalCriarSenha').classList.remove('active'); }
+        function fecharModalEntrarSenha() { $('modalEntrarSenha').classList.remove('active'); }
+
+        // ALTERAR SENHA
+        function abrirAlterarSenha() {
+            if (!localStorage.getItem('pixSenha')) {
+                alert('Nenhuma senha cadastrada. Crie uma senha primeiro.');
+                return;
+            }
+            $('modalAlterarSenha').classList.add('active');
+            $('senhaAtual').value = '';
+            $('novaSenhaAlterar').value = '';
+            $('confirmaSenhaAlterar').value = '';
+            document.getElementById('erroAlterar').classList.remove('visible');
+        }
+
+        function fecharModalAlterarSenha() { $('modalAlterarSenha').classList.remove('active'); }
+
+        function alterarSenha() {
+            const atual = $('senhaAtual').value.trim();
+            const nova = $('novaSenhaAlterar').value.trim();
+            const confirma = $('confirmaSenhaAlterar').value.trim();
+            const salva = localStorage.getItem('pixSenha');
+            if (atual !== salva) {
+                document.getElementById('erroAlterar').textContent = 'Senha atual incorreta.';
+                document.getElementById('erroAlterar').classList.add('visible');
+                return;
+            }
+            if (!nova || nova !== confirma) {
+                document.getElementById('erroAlterar').textContent = 'Nova senha não coincide ou está vazia.';
+                document.getElementById('erroAlterar').classList.add('visible');
+                return;
+            }
+            localStorage.setItem('pixSenha', nova);
+            fecharModalAlterarSenha();
+            alert('✅ Senha alterada com sucesso!');
+        }
+
+        // TUTORIAL
+        function abrirTutorial() { $('modalTutorial').classList.add('active'); }
+        function fecharTutorial() { $('modalTutorial').classList.remove('active'); }
+
+        // UTILITÁRIOS
         function limparTexto(s, max) {
             return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z0-9 .\\-]/g,'').toUpperCase().trim().slice(0,max);
         }
-
         function limparHeader(s, max) {
             if (!s) return '';
             return s.trim().slice(0, max);
         }
-
         function mascararChave(chave) {
             if (!chave) return chave;
             chave = chave.trim();
@@ -618,9 +441,7 @@
                 }
                 return chave;
             }
-            if (/^\d{11}$/.test(chave)) {
-                return '***' + chave.slice(3, -2) + '**';
-            }
+            if (/^\d{11}$/.test(chave)) { return '***' + chave.slice(3, -2) + '**'; }
             if (chave.includes('@')) {
                 const partes = chave.split('@');
                 const local = partes[0];
@@ -630,24 +451,20 @@
             }
             return chave;
         }
-
         function formatarValor(el) {
             let v = el.value.replace(/\D/g, '');
             if (!v) { el.value = ''; return; }
             v = (parseInt(v, 10) / 100).toFixed(2).replace('.', ',');
             el.value = v;
         }
-
         function valorNumero() {
             let v = $('valor').value.replace(/\./g, '').replace(',', '.');
             return Number(v);
         }
-
         function campo(id, tamanho, valor) {
             const s = String(valor);
             return id + String(s.length).padStart(2, '0') + s;
         }
-
         function crc16(str) {
             let crc = 0xFFFF;
             for (let i = 0; i < str.length; i++) {
@@ -658,7 +475,6 @@
             }
             return crc.toString(16).toUpperCase().padStart(4, '0');
         }
-
         function gerarPayload(dados, chave, valor, descricao) {
             const gui = campo('00', 'br.gov.bcb.pix'.length, 'br.gov.bcb.pix');
             const chaveField = campo('01', chave.length, chave);
@@ -688,7 +504,7 @@
             return semCRC + crc16(semCRC);
         }
 
-        // ---------- GERENCIAMENTO DE DADOS ----------
+        // GERENCIAMENTO DE DADOS
         function getConfig() {
             try {
                 const raw = localStorage.getItem('pixConfig');
@@ -707,29 +523,17 @@
                 chaveAtiva: null
             };
         }
-
         function saveConfig(config) {
             localStorage.setItem('pixConfig', JSON.stringify(config));
         }
 
-        function getChaveAtiva(config) {
-            if (!config.chaves || config.chaves.length === 0) return null;
-            if (config.chaveAtiva !== null && config.chaves.some(c => c.id === config.chaveAtiva)) {
-                return config.chaves.find(c => c.id === config.chaveAtiva).chave;
-            }
-            config.chaveAtiva = config.chaves[0].id;
-            saveConfig(config);
-            return config.chaves[0].chave;
-        }
-
-        // ---------- ATUALIZAR INTERFACE ----------
+        // ATUALIZAR INTERFACE
         function atualizarResumo() {
             const config = getConfig();
             const div = document.getElementById('resumoRecebedor');
             const chaveAtiva = config.chaveAtiva !== null ? config.chaves.find(c => c.id === config.chaveAtiva) : null;
             const chaveStr = chaveAtiva ? chaveAtiva.chave : 'Nenhuma chave cadastrada';
             const chaveMasc = chaveAtiva ? mascararChave(chaveAtiva.chave) : '—';
-
             if (config.nome && config.cidade && chaveAtiva) {
                 div.innerHTML = `
                     <div class="resumo">
@@ -740,36 +544,29 @@
                             <strong>Cidade:</strong> ${config.cidade}
                             ${config.txid && config.txid !== '***' ? `<br><strong>TXID:</strong> ${config.txid}` : ''}
                         </div>
-                        <button class="btn-edit" onclick="abrirModalGerenciar()">✎ Editar</button>
+                        <button class="btn-edit" onclick="abrirGerenciar()">✎ Editar</button>
                     </div>
                 `;
             } else {
                 div.innerHTML = `
                     <div style="background:#fef6e0; padding:12px 16px; border-radius:10px; border-left:4px solid #f1b04a; margin-bottom:12px;">
                         <strong>⚠️ Complete o cadastro do recebedor e adicione pelo menos uma chave PIX.</strong>
-                        <button class="primary" onclick="abrirModalGerenciar()" style="width:auto; padding:8px 16px; margin-top:6px;">Configurar agora</button>
+                        <button class="primary" onclick="abrirGerenciar()" style="width:auto; padding:8px 16px; margin-top:6px;">Configurar agora</button>
                     </div>
                 `;
             }
-            // Aplica o estado de edição (desabilitado por padrão) - mas se o segredo já estiver ativo, mantém habilitado
-            const gerenciarBtn = document.getElementById('btnGerenciar');
-            if (!gerenciarBtn.classList.contains('active')) {
-                desabilitarEdicao();
-            } else {
-                // Se já estiver ativo, reaplica a habilitação
-                habilitarEdicao();
-            }
         }
 
-        // ---------- MODAL GERENCIAR ----------
+        // ATUALIZAR CABEÇALHO (CORRIGIDO)
+        function atualizarCabecalho(titulo) {
+            const elemento = document.getElementById('tituloCabecalho');
+            if (!elemento) return;
+            const tituloFinal = (titulo && titulo.trim() !== '') ? titulo : 'PIX Recebimentos';
+            elemento.textContent = tituloFinal;
+        }
+
+        // MODAL GERENCIAR
         function abrirModalGerenciar() {
-            // Se o botão Gerenciar estiver desabilitado, não abre (a menos que o segredo tenha sido ativado)
-            const btn = document.getElementById('btnGerenciar');
-            if (!btn.classList.contains('active') && btn.style.display === 'none') {
-                // Tenta ativar o segredo? Não, apenas avisa que precisa do segredo.
-                alert('Para acessar esta função, clique 7 vezes no canto superior direito da tela.');
-                return;
-            }
             const config = getConfig();
             $('modalHeader').value = config.header || 'PIX Recebimentos';
             $('modalNome').value = config.nome || '';
@@ -782,13 +579,7 @@
             $('statusChaves').textContent = '';
             $('novaChaveInput').value = '';
         }
-
-        function fecharModalGerenciar() {
-            $('modalGerenciar').classList.remove('active');
-            // Desabilita a edição ao fechar o modal (a menos que o segredo ainda esteja ativo)
-            // Mas o segredo é reaplicado ao clicar novamente.
-            desabilitarEdicao();
-        }
+        function fecharModalGerenciar() { $('modalGerenciar').classList.remove('active'); }
 
         function renderizarListaChaves(config) {
             const container = document.getElementById('listaChaves');
@@ -889,9 +680,7 @@
             }
             const newId = Date.now();
             config.chaves.push({ id: newId, chave: valor });
-            if (!config.chaveAtiva) {
-                config.chaveAtiva = newId;
-            }
+            if (!config.chaveAtiva) config.chaveAtiva = newId;
             saveConfig(config);
             renderizarListaChaves(config);
             atualizarResumo();
@@ -908,7 +697,6 @@
             config.cidade = limparTexto($('modalCidade').value, 15);
             config.txid = limparTexto($('modalTxid').value, 25) || '***';
             config.descricao = limparTexto($('modalDescricao').value, 72);
-
             if (!config.nome || !config.cidade) {
                 $('geralStatus').textContent = 'Preencha nome e cidade.';
                 $('geralStatus').style.color = '#a42020';
@@ -928,17 +716,9 @@
             $('geralStatus').textContent = '✓ Configurações salvas!';
             $('geralStatus').style.color = '#0b6b3a';
             setTimeout(() => { $('geralStatus').textContent = ''; }, 3000);
-            // Fecha o modal após salvar? Pode fechar, mas mantém aberto para editar mais.
-            // Se quiser fechar automaticamente, descomente:
-            // fecharModalGerenciar();
         }
 
-        function atualizarCabecalho(titulo) {
-            const headerTitulo = document.getElementById('headerTitulo');
-            headerTitulo.innerHTML = `<i class="fas fa-cash-register"></i> ${titulo || 'PIX Recebimentos'}`;
-        }
-
-        // ---------- MODAL RELATÓRIOS ----------
+        // RELATÓRIOS
         function abrirModalRelatorios() {
             const lista = getRecebimentos();
             renderizarLista(lista);
@@ -951,7 +731,7 @@
             if (e.target === this) fecharModalRelatorios();
         });
 
-        // ---------- RECEBIMENTOS ----------
+        // RECEBIMENTOS
         function getRecebimentos() {
             try { return JSON.parse(localStorage.getItem('pixRecebimentos') || '[]'); } catch (e) { return []; }
         }
@@ -1044,26 +824,26 @@
             renderizarLista(lista);
         }
 
-        // ---------- GERAR QR CODE ----------
+        // GERAR QR CODE
         function gerarPix() {
             const config = getConfig();
             if (!config.nome || !config.cidade) {
                 $('recebStatus').textContent = 'Configure o recebedor primeiro.';
                 $('recebStatus').style.color = '#a42020';
-                abrirModalGerenciar();
+                abrirGerenciar();
                 return;
             }
             if (!config.chaves || config.chaves.length === 0) {
                 $('recebStatus').textContent = 'Cadastre pelo menos uma chave PIX.';
                 $('recebStatus').style.color = '#a42020';
-                abrirModalGerenciar();
+                abrirGerenciar();
                 return;
             }
             const chaveAtiva = config.chaves.find(c => c.id === config.chaveAtiva);
             if (!chaveAtiva) {
                 $('recebStatus').textContent = 'Selecione uma chave ativa.';
                 $('recebStatus').style.color = '#a42020';
-                abrirModalGerenciar();
+                abrirGerenciar();
                 return;
             }
             const chave = chaveAtiva.chave;
@@ -1084,21 +864,40 @@
             adicionarRecebimento(valor, descricao, txid, chave);
             $('payload').textContent = payload;
             $('valorExibido').textContent = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            $('qrcode').innerHTML = '';
+            
+            // Limpa o QR Code
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+            
             if (typeof QRCode === 'undefined') {
                 $('recebStatus').textContent = 'Biblioteca QR Code não carregada.';
                 $('recebStatus').style.color = '#a42020';
                 return;
             }
-            new QRCode($('qrcode'), { text: payload, width: 260, height: 260, correctLevel: QRCode.CorrectLevel.M });
+            
+            // Gera o QR Code
+            new QRCode(qrContainer, { 
+                text: payload, 
+                width: 260, 
+                height: 260, 
+                correctLevel: QRCode.CorrectLevel.M 
+            });
+            
+            // Exibe o wrapper do QR Code (que contém o ícone)
+            document.getElementById('qrcode-wrapper').style.display = 'inline-block';
             document.getElementById('resultado').style.display = 'block';
             $('recebStatus').textContent = '✓ QR Code gerado. Recebimento pendente.';
             $('recebStatus').style.color = '#0b6b3a';
-            document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+            
+            const resultadoEl = document.getElementById('resultado');
+            setTimeout(() => {
+                resultadoEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 200);
+            
             $('valor').value = '';
         }
 
-        // ---------- COPIAR E COMPARTILHAR ----------
+        // COPIAR E COMPARTILHAR
         async function copiarPix() {
             const texto = $('payload').textContent;
             if (!texto) return;
@@ -1115,19 +914,12 @@
                 alert('PIX Copia e Cola copiado!');
             }
         }
-
         async function compartilharPix() {
             const texto = $('payload').textContent;
             if (!texto) return;
             const mensagem = texto;
             if (navigator.share) {
-                try {
-                    await navigator.share({ title: 'Pagamento PIX', text: mensagem });
-                } catch (e) {
-                    if (e.name !== 'AbortError') {
-                        alert('Não foi possível compartilhar.');
-                    }
-                }
+                try { await navigator.share({ title: 'Pagamento PIX', text: mensagem }); } catch (e) {}
             } else {
                 try {
                     await navigator.clipboard.writeText(mensagem);
@@ -1144,8 +936,11 @@
             }
         }
 
-        // ---------- INICIALIZAÇÃO ----------
+        // INICIALIZAÇÃO
         function iniciar() {
+            // Esconde o wrapper do QR Code inicialmente
+            document.getElementById('qrcode-wrapper').style.display = 'none';
+            
             const config = getConfig();
             atualizarCabecalho(config.header || 'PIX Recebimentos');
             atualizarResumo();
@@ -1156,13 +951,9 @@
             document.getElementById('filtroFim').value = hoje;
             const lista = getRecebimentos();
             renderizarLista(lista);
-            // Garantir que a edição comece desabilitada
-            desabilitarEdicao();
         }
-
         iniciar();
 
-        // Expor funções globalmente
         window.marcarComoPago = marcarComoPago;
         window.excluirRecebimento = excluirRecebimento;
         window.filtrarPorDia = filtrarPorDia;
@@ -1170,15 +961,22 @@
         window.limparFiltros = limparFiltros;
         window.abrirModalRelatorios = abrirModalRelatorios;
         window.fecharModalRelatorios = fecharModalRelatorios;
-        window.abrirModalGerenciar = abrirModalGerenciar;
+        window.abrirGerenciar = abrirGerenciar;
         window.fecharModalGerenciar = fecharModalGerenciar;
+        window.abrirAlterarSenha = abrirAlterarSenha;
+        window.fecharModalAlterarSenha = fecharModalAlterarSenha;
+        window.alterarSenha = alterarSenha;
         window.adicionarChave = adicionarChave;
         window.selecionarChave = selecionarChave;
         window.editarChave = editarChave;
         window.excluirChave = excluirChave;
         window.salvarConfiguracoes = salvarConfiguracoes;
-        window.habilitarEdicao = habilitarEdicao;
-        window.desabilitarEdicao = desabilitarEdicao;
+        window.criarSenha = criarSenha;
+        window.entrarSenha = entrarSenha;
+        window.fecharModalCriarSenha = fecharModalCriarSenha;
+        window.fecharModalEntrarSenha = fecharModalEntrarSenha;
+        window.abrirTutorial = abrirTutorial;
+        window.fecharTutorial = fecharTutorial;
     </script>
 </body>
 </html>
